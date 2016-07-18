@@ -3,7 +3,7 @@
  */
 
 function route(pathname) {
-    cobsole.log("Request for " + pathname);
+    console.log("Request for " + pathname);
 }
 
 exports.route = route;
