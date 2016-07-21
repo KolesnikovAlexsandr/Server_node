@@ -7,15 +7,25 @@ var url = require("url");
 var counter_of_clients = 0;
 
 //function(nodejs module) start server and get response and request
-function start(router , handle) {
+function start(route , handle) {
 
-    function onRequest(reguest, response) {
-        
-        counter_of_clients++;
-        var pathname = url.parse(reguest.url).pathname;
+    function onRequest(request, response) {
+
+        var postData = "";
+        var pathname = url.parse(request.url).pathname;
         console.log("Request for " + pathname + " received.");
-        console.log("Request received " + counter_of_clients);
-        router(handle,pathname);
+
+        request.setEncoding("utf8");
+
+        request.addListener("data", function(postDataChunk) {
+            postData += postDataChunk;
+            console.log("Received POST data chunk '"+
+                postDataChunk + "'.");
+        });
+
+        request.addListener("end", function() {
+            route(handle, pathname, response, postData);
+        });
         
     }
 
