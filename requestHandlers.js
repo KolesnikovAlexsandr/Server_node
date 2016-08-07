@@ -4,27 +4,50 @@
 
 var querystring = require("querystring");
 
-function start(response , postDate) {
-    console.log("Request handler 'start' was called.");
+function index(response , postDate) {
+
+    console.log("Request handler 'index' was called.");
 
     // Читаем файл
     fs = require('fs');
-    fs.readFile('./main.html', function(err, info){
+    console.log(response.url);
+    fs.readFile('./index.html', function(err, info){
         if (err) throw err;
-        response.end(info);
+        response.write(info);
+        response.end();
     })
+
+
 }
 
 /**
  * Created by sasha on 18/07/16.
  */
-function upload(response , postData) {
+function error(response , postData) {
 
-    console.log("Request handler 'upload' was called.");
     response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("You've sent: " + querystring.parse(postData).text);
+    response.write("404 not found: " + querystring.parse(postData).text);
     response.end();
 }
 
-exports.start = start;
-exports.upload = upload;
+function file(response , postData) {
+
+    console.log("Load file.");
+
+    // Читаем файл
+    fs = require('fs');
+    console.log(postData + " !!!");
+    fs.readFile('.'+postData, function(err, info){
+        if (err) error(response,postData);
+        else 
+        {
+            console.log("load file:" + '.'+response);
+            response.write(info);
+            response.end();
+        }
+    })
+}
+
+exports.file = file;
+exports.index = index;
+exports.error = error;
