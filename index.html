@@ -51,12 +51,20 @@
         <p class="lead"> Text</p>
         <button type="button" class="btn btn-success" onclick="start()">Start</button>
       </div>
-
+      <div id="botWindow">
+        <script type="text/javascript" src="bot/bot.js"></script>
+        <div id="monitor"></div>
+        <div id="userConsole">
+          <input type="text" class="form-control" placeholder="Text input" id="userConsoleText" size="25" maxlength="90%" value="">
+          <button id="userConsoleSendButton" value="Отправить" type="button" class="btn btn-danger">Send</button>
+        </div>
+      </div>
     </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+
   </body>
 </html>

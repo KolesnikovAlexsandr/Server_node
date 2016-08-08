@@ -5,17 +5,31 @@
 var recognizer = new webkitSpeechRecognition();
 var voices = speechSynthesis.getVoices();
 
-var callProgram = false;
+
+
+var callProgram = true;
+var stopRecognizer = false;
 function start() {
     recognizer.start();
 }
+
+function restartRecord() {
+    if(stopRecognizer)
+    {
+        console.log("Restart");
+        recognizer.start();
+    }
+
+}
+
+setTimeout(restartRecord, 1000);
 
 // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
 recognizer.interimResults = true;
 recognizer.continuous = true;
 
 // Какой язык будем распознавать?
-recognizer.lang = 'en-US';
+recognizer.lang = 'ru-RU';
 
 function speech(text) {
     // Create a new instance of SpeechSynthesisUtterance.
@@ -46,22 +60,23 @@ recognizer.onresult = function (event) {
         cmd.toString();
         cmd.toLowerCase();
         console.log('Финальный результат:'+cmd);
-        if( cmd == "Friday" && !callProgram)
+        if( cmd == "пятница" && !callProgram)
         {
-            recognizer.stop();
             callProgram == true;
             console.log("call program");
-            speech("Hi! How are you today?");
+            //speech("spech something");
         }
         else if(callProgram == true)
         {
+            document.getElementById("userConsoleText").value = cmd;
+            var event = new Event("click");
+            userConsoleSendButton.dispatchEvent(event);
             console.log("call program2");
-            speech("spech something");
+            //speech("spech something");
         }
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
     }
-    recognizer.stop();
 };
 
 recognizer.onerror = function(event) {
