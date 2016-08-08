@@ -60,19 +60,17 @@ recognizer.onresult = function (event) {
         cmd.toString();
         cmd.toLowerCase();
         console.log('Финальный результат:'+cmd);
-        if( cmd == "пятница" && !callProgram)
+
+        if( getcmd(cmd) )
         {
             callProgram == true;
             console.log("call program");
-            //speech("spech something");
         }
-        else if(callProgram == true)
+        else
         {
             document.getElementById("userConsoleText").value = cmd;
             var event = new Event("click");
             userConsoleSendButton.dispatchEvent(event);
-            console.log("call program2");
-            //speech("spech something");
         }
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
@@ -85,4 +83,5 @@ recognizer.onerror = function(event) {
 };
 // Начинаем слушать микрофон и распознавать голос
 
+//http://google.com/images?q=крым&imgtype=photo
 
