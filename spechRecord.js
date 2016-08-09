@@ -46,11 +46,12 @@ function speech(text) {
 recognizer.onresult = function (event) {
     var result = event.results[event.resultIndex];
     if (result.isFinal) {
-        var cmd = result[0].transcript;
+        var cmd = result[0].transcript.toLowerCase();
         console.log('Финальный результат:'+cmd);
 
         if( !getcmd(cmd) )
         {
+            cmd = findMath(cmd);
             document.getElementById("userConsoleText").value = cmd;
             var event = new Event("click");
             userConsoleSendButton.dispatchEvent(event);
