@@ -2650,10 +2650,17 @@ Monitor.prototype.main = function() {
  return 1;
 };
 Monitor.prototype.printlnMessage = function(userId, message) { 
- if(this.mustTrace()) {this.getLog().println("Monitor.printlnMessage is runing...");};
- var messageElement = document.createElement("div");
+ if(this.mustTrace()) {
+  this.getLog().println("Monitor.printlnMessage is runing...");};
+ var messageElement = document.createElement("p");
  messageElement.id = this.getMessageIdPrefix() + this.getMessageNumber();
- messageElement.className = userId;
+ if(userId == "bot") {
+  messageElement.className = "lead bg-info text-left ";
+ }
+ else {
+  messageElement.className = "lead bg-danger text-right ";
+ }
+
  messageElement.appendChild(document.createTextNode(message));
  this.getMonitorElement().appendChild(messageElement);
  // messageElement.focus();
@@ -2698,7 +2705,7 @@ UserConsole.prototype.main = function() {
 UserConsole.prototype.writeMessage = function(e) { 
  if(this.mustTrace()) {this.getLog().println("UserConsole.writeMessage is runing...");};
  var message = document.getElementById("userConsoleText").value;
- document.getElementById("userConsoleText").value = "";
+ document.getElementById("userConsoleText").value = " ";
  this.getMonitor().setUserMessage(message);
  return 1;
 };

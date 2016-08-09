@@ -13,16 +13,6 @@ function start() {
     recognizer.start();
 }
 
-function restartRecord() {
-    if(stopRecognizer)
-    {
-        console.log("Restart");
-        recognizer.start();
-    }
-
-}
-
-setTimeout(restartRecord, 1000);
 
 // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
 recognizer.interimResults = true;
@@ -57,20 +47,14 @@ recognizer.onresult = function (event) {
     var result = event.results[event.resultIndex];
     if (result.isFinal) {
         var cmd = result[0].transcript;
-        cmd.toString();
-        cmd.toLowerCase();
         console.log('Финальный результат:'+cmd);
 
-        if( getcmd(cmd) )
-        {
-            callProgram == true;
-            console.log("call program");
-        }
-        else
+        if( !getcmd(cmd) )
         {
             document.getElementById("userConsoleText").value = cmd;
             var event = new Event("click");
             userConsoleSendButton.dispatchEvent(event);
+
         }
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
