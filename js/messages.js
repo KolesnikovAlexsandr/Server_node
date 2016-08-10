@@ -1,1 +1,0 @@
-!function(n){function o(n){return e[n]?e[n]:n}function t(n){c(e,n)}function c(n,o){for(var t,c=Object.keys(o),e=0;t=c[e];e++)n[t]=o[t]}var e={};n.addMessages=t,n.__=o}(window);

@@ -2,6 +2,8 @@
  * Created by sasha on 07/08/16.
  */
 // Создаем распознаватель
+var respond = '{"id":"*","answer":"*"}';
+
 var recognizer = new webkitSpeechRecognition();
 var voices = speechSynthesis.getVoices();
 
@@ -45,10 +47,14 @@ function speech(text) {
 // Используем колбек для обработки результатов
 recognizer.onresult = function (event) {
     var result = event.results[event.resultIndex];
+    console.log();
     if (result.isFinal) {
         var cmd = result[0].transcript.toLowerCase();
         console.log('Финальный результат:'+cmd);
-
+        respond = JSON.parse(respond);
+        respond.id = "user";
+        respond.answer = cmd;
+        
         if( !getcmd(cmd) )
         {
             cmd = findMath(cmd);

@@ -52,7 +52,6 @@ function  openWiki(cmd , index) {
 function findMath(cmd) {
     
     optionMath.forEach(function (item) {
-        console.log(cmd+"  " + item[0] + "  "+item[1]);
         if(cmd.indexOf(item[0]) != -1)
         {
             while(cmd.indexOf(item[0]) != -1) {

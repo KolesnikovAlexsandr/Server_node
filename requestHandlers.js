@@ -7,10 +7,9 @@ var querystring = require("querystring");
 function index(response , postDate) {
 
     console.log("Request handler 'index' was called.");
-
+    console.log(response);
     // Читаем файл
     fs = require('fs');
-    console.log(response.url);
     fs.readFile('./index.html', function(err, info){
         if (err) throw err;
         response.write(info);
@@ -31,12 +30,9 @@ function error(response , postData) {
 }
 
 function file(response , postData) {
-
-    console.log("Load file.");
-
     // Читаем файл
+    console.log(postData);
     fs = require('fs');
-    console.log(postData + " !!!");
     fs.readFile('.'+postData, function(err, info){
         if (err) error(response,postData);
         else 
