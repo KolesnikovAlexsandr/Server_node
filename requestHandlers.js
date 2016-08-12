@@ -7,7 +7,8 @@ var querystring = require("querystring");
 function index(response , postDate) {
 
     console.log("Request handler 'index' was called.");
-    console.log(response);
+    console.log("Respond:" + response);
+    console.log("PostData:" + postDate);
     // Читаем файл
     fs = require('fs');
     fs.readFile('./index.html', function(err, info){
@@ -37,7 +38,6 @@ function file(response , postData) {
         if (err) error(response,postData);
         else 
         {
-            console.log("load file:" + '.'+response);
             response.write(info);
             response.end();
         }

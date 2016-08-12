@@ -13,17 +13,19 @@ function start(route , handle) {
 
         var postData = "";
         var pathname = url.parse(request.url).pathname;
+        if(pathname.indexOf("JSON") != -1)
+        {
+            pathname=pathname.split("JSON:");
+            pathname = JSON.parse(pathname[1]);
+            console.log(pathname);
+        }
 
-        console.log("Request for " + pathname + " received.");
-
+        
         request.setEncoding("utf8");
 
         request.addListener("data", function(postDataChunk) {
 
             postData += postDataChunk;
-
-            console.log("Received POST data chunk '"+
-                postDataChunk + "'.");
             
         });
 

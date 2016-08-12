@@ -50,11 +50,15 @@ recognizer.onresult = function (event) {
     console.log();
     if (result.isFinal) {
         var cmd = result[0].transcript.toLowerCase();
-        console.log('Финальный результат:'+cmd);
+        var request = new XMLHttpRequest();
         respond = JSON.parse(respond);
         respond.id = "user";
         respond.answer = cmd;
-        
+        var url = "http://localhost:8888/index" + "JSON:"+respond.answer;
+
+        request.open("GET", url, true);
+        request.send(null);
+
         if( !getcmd(cmd) )
         {
             cmd = findMath(cmd);
