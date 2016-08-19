@@ -14,6 +14,7 @@ var monitorElementId = "monitor";
 //var tracing = false; 
 var userElementId = "guest";
 var botManager;
+var monitor;
 var initAll = function(e) {
  events.setTracing(tracing);
  events.setDebugging(debugging); events.setLog(botLog); 
@@ -29,7 +30,6 @@ var initAll = function(e) {
   return -1; 
  };
  dom.changeTextContent("loadMessage", dom.getTextContent("clickMessage"));
- var monitor;
  monitor = new Monitor();
  monitor.setTracing(tracing);
  monitor.setDebugging(debugging);
@@ -2654,14 +2654,17 @@ Monitor.prototype.printlnMessage = function(userId, message) {
   this.getLog().println("Monitor.printlnMessage is runing...");};
  var messageElement = document.createElement("p");
  messageElement.id = this.getMessageIdPrefix() + this.getMessageNumber();
+ messageElement.setAttribute("style","border-radius: 40px;");
  if(userId == "bot") {
-  messageElement.className = "lead bg-info text-left ";
+
+  messageElement.className = "lead bg-info text-left center-block";
+  messageElement.appendChild(document.createTextNode("  "+message+"  "));
  }
  else {
   messageElement.className = "lead bg-danger text-right ";
+  messageElement.appendChild(document.createTextNode("  " + message + "  "));
  }
 
- messageElement.appendChild(document.createTextNode(message));
  this.getMonitorElement().appendChild(messageElement);
  // messageElement.focus();
  this.getMonitorElement().scrollTop = this.getMonitorElement().scrollHeight;
@@ -2694,14 +2697,16 @@ UserConsole.prototype.ev;
 UserConsole.prototype.monitor;
  UserConsole.prototype.getMonitor = function () {return this.monitor;};
  UserConsole.prototype.setMonitor = function (monitor) {this.monitor = monitor; return 1;};
-UserConsole.prototype.version = "20061018"; 
+UserConsole.prototype.version = "20061018";
+
 UserConsole.prototype.main = function() { 
  if(this.mustTrace()) {this.getLog().println("UserConsole.main is runing...");};
  var the = this;
  this.getEvent().addEventListener("userConsoleSendButton", "click", function(e) {the.writeMessage(e);}, false);
- this.getEvent().addEventListener("userConsoleText", "keypress", function(e) {if(e.keyCode != 13 && e.which != 13) {return -1;}; the.writeMessage(e);}, false);
+ this.getEvent().addEventListener("userConsoleText", "keypress", function(e) {if(e.keyCode != 13 && e.which != 13) {return -1;};the.writeMessage(e);}, false);
  return 1;
 };
+
 UserConsole.prototype.writeMessage = function(e) { 
  if(this.mustTrace()) {this.getLog().println("UserConsole.writeMessage is runing...");};
  var message = document.getElementById("userConsoleText").value;
@@ -2709,6 +2714,7 @@ UserConsole.prototype.writeMessage = function(e) {
  this.getMonitor().setUserMessage(message);
  return 1;
 };
+
 if(Root && Events) {
  events = new Events();
  events.addEventListener(window, "load", initAll, false);

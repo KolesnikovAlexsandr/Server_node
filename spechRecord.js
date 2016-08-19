@@ -6,7 +6,7 @@ var respond = '{"id":"*","answer":"*"}';
 
 var recognizer = new webkitSpeechRecognition();
 var voices = speechSynthesis.getVoices();
-
+var messegeField = document.getElementById("monitor");
 
 
 var callProgram = true;
@@ -65,10 +65,15 @@ recognizer.onresult = function (event) {
             userConsoleSendButton.dispatchEvent(event);
 
         }
+        else{
+            monitor.printlnMessage("user",cmd);
+
+        }
+
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
         document.getElementById("userConsoleText").value = result[0].transcript;
-        document.getElementById("userConsoleText").setAttribute('style',"color:red;")
+        document.getElementById("userConsoleText").setAttribute('style',"color:#DCDCDC;")
     }
 };
 

@@ -6,6 +6,6 @@ body {
   text-align: center;
 }
 #monitor{
-  overflow: scroll;
+  overflow: auto;
   height: 150px;
 }
