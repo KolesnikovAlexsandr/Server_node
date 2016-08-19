@@ -50,14 +50,12 @@ recognizer.onresult = function (event) {
     console.log();
     if (result.isFinal) {
         var cmd = result[0].transcript.toLowerCase();
-        var request = new XMLHttpRequest();
-        respond = JSON.parse(respond);
-        respond.id = "user";
-        respond.answer = cmd;
-        var url = "http://localhost:8888/index" + "JSON:"+respond.answer;
-
-        request.open("GET", url, true);
-        request.send(null);
+        //var request = new XMLHttpRequest();
+        //respond = JSON.parse(respond);
+        //respond.id = "user";
+        //respond.answer = cmd;
+        //request.open("POST",respond,true);
+        //request.setRequestHeader("Content-type", "application/json; charset=utf-8");
 
         if( !getcmd(cmd) )
         {
@@ -69,6 +67,8 @@ recognizer.onresult = function (event) {
         }
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
+        document.getElementById("userConsoleText").value = result[0].transcript;
+        document.getElementById("userConsoleText").setAttribute('style',"color:red;")
     }
 };
 
