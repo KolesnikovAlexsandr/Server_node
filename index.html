@@ -13,8 +13,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/starter-template.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/app.css">
+    <link href="css/IndexStyle.css" rel="stylesheet">
 
     <!-- Jquery init-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -52,22 +51,15 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Text</h1>
-        <p class="lead"> Text</p>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="start()">Start</button>
+        <button type="button" class="btn btn-success" onclick="start()">Start</button>
       </div>
     </div><!-- /.container -->
 
-          <div class="modal-body">
-            <div id="botWindow">
-              <div id="monitor"></div>
-              <div id="userConsole">
-                <input type="text" class="form-control" placeholder="Text input" id="userConsoleText" size="25" maxlength="90%" value="">
-                <button id="userConsoleSendButton" value="Отправить" type="button" class="btn btn-danger">Send</button>
-              </div>
-            </div>
-          </div>
-
-
+    <div class="botWindow">
+      <div id="monitor"></div>
+        <div id="userConsole">
+        <input type="text" class="form-control" placeholder="Text input" id="userConsoleText" size="25" maxlength="90%" value="">
+      </div>
+    </div>
   </body>
 </html>
