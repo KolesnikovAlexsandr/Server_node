@@ -13,15 +13,12 @@ function start(route , handle) {
 
         var postData = "";
         var pathname = url.parse(request.url).pathname;
-
+        
         request.setEncoding("utf8");
 
         request.addListener("data", function(postDataChunk) {
 
             postData += postDataChunk;
-            postData.toJSON();
-            console.log("!!" +postData)
-            
         });
 
         request.addListener("end", function() {

@@ -19,7 +19,6 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             openGoogle(cmd,findIndex += item.length);
-            console.log("true");
             findcmd =  true;
         }
     });

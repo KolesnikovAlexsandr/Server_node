@@ -15,6 +15,7 @@ var monitorElementId = "monitor";
 var userElementId = "guest";
 var botManager;
 var monitor;
+var chatBotKisa;
 var initAll = function(e) {
  events.setTracing(tracing);
  events.setDebugging(debugging); events.setLog(botLog); 
@@ -47,7 +48,7 @@ var initAll = function(e) {
  userConsole.setEvent(events);
  userConsole.setMonitor(monitor);
  userConsole.main();
- var chatBotKisa = new ChatBotKisa();
+ chatBotKisa = new ChatBotKisa();
  chatBotKisa.setTracing(tracing);
  chatBotKisa.setDebugging(debugging);
  chatBotKisa.setLog(botLog);
@@ -405,15 +406,15 @@ BotManager.prototype.getResponse = function(message) {
   var currentMessage = this.bots[i].getResponse(message);
   if(currentMessage.getRelevance() == 1) {
    if(this.mustDebug()) {this.getLog().println("BotManager.getResponse: " + "currentMessage.getText() = " + currentMessage.getText());};
-   this.getMonitor().setBotMessage(currentMessage);
+  // this.getMonitor().setBotMessage(currentMessage);
    return 1;
   } else if(currentMessage.getRelevance() > maxRelevanceMessage.getRelevance()) {
    maxRelevanceMessage = currentMessage;
   };
  };
  if(this.mustDebug()) {this.getLog().println("BotManager.getResponse: " + "maxRelevanceMessage.getText() = " + maxRelevanceMessage.getText());};
- this.getMonitor().setBotMessage(maxRelevanceMessage);
- return 1;
+ //this.getMonitor().setBotMessage(maxRelevanceMessage);
+ return maxRelevanceMessage.getText();
 };
 var ChatBot = function() {};
 ChatBot.prototype = new Root();
@@ -2654,7 +2655,7 @@ Monitor.prototype.printlnMessage = function(userId, message) {
   this.getLog().println("Monitor.printlnMessage is runing...");};
  var messageElement = document.createElement("p");
  messageElement.id = this.getMessageIdPrefix() + this.getMessageNumber();
- messageElement.setAttribute("style","border-radius: 40px;");
+ messageElement.setAttribute("style","border-radius: 20px;");
  if(userId == "bot") {
 
   messageElement.className = "lead bg-info text-left center-block";
@@ -2716,6 +2717,17 @@ UserConsole.prototype.writeMessage = function(e) {
 };
 
 if(Root && Events) {
- events = new Events();
- events.addEventListener(window, "load", initAll, false);
+ //events = new Events();
+ //events.addEventListener(window, "load", initAll, false);
 };
+
+exports.getAnswer = function(cmd)
+{
+ var botMan = new ChatBotKisa();
+ var message = botMan.getResponse(cmd);
+ return message.getText();
+}
+
+ 
+
+

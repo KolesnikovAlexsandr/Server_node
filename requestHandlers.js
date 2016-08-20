@@ -3,6 +3,8 @@
  */
 
 var querystring = require("querystring");
+var bot = require("./bot/bot.js").getAnswer;
+
 
 function index(response , postDate) {
 
@@ -10,12 +12,21 @@ function index(response , postDate) {
     console.log("Respond:" + response);
     console.log("PostData:" + postDate);
     // Читаем файл
-    fs = require('fs');
-    fs.readFile('./index.html', function(err, info){
-        if (err) throw err;
-        response.write(info);
+    if(postDate.indexOf("user:") != -1)
+    {
+        response.write(bot(postDate.substring(5)));
         response.end();
-    })
+    }
+    else {
+
+
+        fs = require('fs');
+        fs.readFile('./index.html', function (err, info) {
+            if (err) throw err;
+            response.write(info);
+            response.end();
+        })
+    }
 
 
 }

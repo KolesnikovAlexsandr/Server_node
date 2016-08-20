@@ -6,8 +6,9 @@ var respond = '{"id":"*","answer":"*"}';
 
 var recognizer = new webkitSpeechRecognition();
 var voices = speechSynthesis.getVoices();
-var messegeField = document.getElementById("monitor");
-
+var messegeField ;document.getElementById("monitor");
+var BotMessageId = 0;
+var UserMessageId = 0;
 
 var callProgram = true;
 var stopRecognizer = false;
@@ -50,23 +51,26 @@ recognizer.onresult = function (event) {
     console.log();
     if (result.isFinal) {
         var cmd = result[0].transcript.toLowerCase();
-        //var request = new XMLHttpRequest();
-        //respond = JSON.parse(respond);
-        //respond.id = "user";
-        //respond.answer = cmd;
-        //request.open("POST",respond,true);
-        //request.setRequestHeader("Content-type", "application/json; charset=utf-8");
 
         if( !getcmd(cmd) )
         {
             cmd = findMath(cmd);
-            document.getElementById("userConsoleText").value = cmd;
-            var event = new Event("click");
-            userConsoleSendButton.dispatchEvent(event);
+            UserMessageId ++;
+            PrintMessage("user" , cmd);
+            var request = new XMLHttpRequest();
+            request.open("POST",'index',true);
+            request.send("user:"+cmd);
+            request.onreadystatechange = function()
+            {
+                if(request.readyState == 4)
+                {
+                    BotMessageId ++;
+                    PrintMessage("bot",request.responseText);
+                }
+            }
 
         }
         else{
-            monitor.printlnMessage("user",cmd);
 
         }
 
@@ -81,7 +85,27 @@ recognizer.onerror = function(event) {
     console.log(event.error);
 
 };
+
+
+var PrintMessage = function(person , message)
+{
+    messegeField = document.getElementById("monitor");
+    var messageElement = document.createElement("p");
+    messageElement.setAttribute("style","border-radius: 20px;");
+    if(person == "bot")
+    {
+        messageElement.id = BotMessageId;
+        messageElement.className = "lead bg-info text-left center-block";
+        messageElement.appendChild(document.createTextNode("  "+message+"  "));
+    }
+    else
+    {
+        messageElement.id = UserMessageId;
+        messageElement.className = "lead bg-danger text-right ";
+        messageElement.appendChild(document.createTextNode("  " + message + "  "));
+    }
+    messegeField.appendChild(messageElement);
+}
 // Начинаем слушать микрофон и распознавать голос
 
-//http://google.com/images?q=крым&imgtype=photo
 
