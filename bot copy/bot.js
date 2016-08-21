@@ -48,7 +48,7 @@ var initAll = function(e) {
  userConsole.setEvent(events);
  userConsole.setMonitor(monitor);
  userConsole.main();
- chatBotKisa = new SpeechBot();
+ chatBotKisa = new ChatBotKisa();
  chatBotKisa.setTracing(tracing);
  chatBotKisa.setDebugging(debugging);
  chatBotKisa.setLog(botLog);
@@ -347,6 +347,75 @@ function unpadString(string) {
  };
  return result;
 }
+var BotManager = function() {};
+BotManager.prototype = new Root();
+BotManager.prototype.bots = new Array();
+ BotManager.prototype.addBot = function(bot) {this.bots[this.bots.length] = bot;bot.setBotManager(this);bot.setCurrentLanguage(this.getCurrentLanguage());return 1;};
+ BotManager.prototype.getBots = function() {return this.bots;};
+ BotManager.prototype.getBotsCount = function() {return this.bots.length;};
+ BotManager.prototype.setBots = function(bots) {this.bots = bots; return 1;};
+BotManager.prototype.className = "BotManager"; 
+BotManager.prototype.created = "20061018"; 
+BotManager.prototype.currentLanguage = "english";
+ BotManager.prototype.getCurrentLanguage = function () {return this.currentLanguage;};
+ BotManager.prototype.setCurrentLanguage = function (currentLanguage) {this.currentLanguage = currentLanguage; return 1;};
+BotManager.prototype.botMessages = new Array();
+ BotManager.prototype.addBotMessage = function(botMessage) {this.botMessages[this.botMessages.length] = botMessage;return 1;};
+ BotManager.prototype.getCountBotMessages = function(i) {return this.botMessages.length;};
+ BotManager.prototype.getBotMessage = function(i) {return this.botMessages[i];};
+ BotManager.prototype.getBotMessages = function() {return this.botMessages;};
+ BotManager.prototype.getBotMessagesCount = function() {return this.botMessages.length;};
+ BotManager.prototype.getLastBotMessage = function() {return this.botMessages[this.botMessages.length-1];};
+ BotManager.prototype.setBotMessages = function(botMessages) {this.botMessages = botMessages; return 1;};
+BotManager.prototype.monitor;
+ BotManager.prototype.getMonitor = function() {return this.monitor;};
+ BotManager.prototype.setMonitor = function(monitor) {this.monitor = monitor;monitor.setBotManager(this);return 1;};
+BotManager.prototype.userMessages = new Array();
+ BotManager.prototype.addUserMessage = function(userMessage) {this.userMessages[this.userMessages.length] = userMessage;return 1;};
+ BotManager.prototype.getCountUserMessages = function(i) {return this.userMessages.length;};
+ BotManager.prototype.getUserMessage = function(i) {return this.userMessages[i];};
+ BotManager.prototype.getUserMessages = function() {return this.userMessages;};
+ BotManager.prototype.getUserMessagesCount = function() {return this.userMessages.length;};
+ BotManager.prototype.getLastUserMessage = function() {return this.userMessages[this.userMessages.length-2];};
+ BotManager.prototype.getCurrentUserMessage = function() {return this.userMessages[this.userMessages.length-1];};
+ BotManager.prototype.setUserMessages = function(userMessages) {this.userMessages = userMessages; return 1;};
+BotManager.prototype.version = "20061018"; 
+BotManager.prototype.main = function() { 
+ if(this.mustTrace()) {this.getLog().println("BotManager.main is runing...");};
+ this.getMonitor().setBotMessage(this.getFirstMessage(this.getCurrentLanguage()));
+ return 1;
+};
+BotManager.prototype.getFirstMessage = function(language) { 
+ if(this.mustTrace()) {this.getLog().println("BotManager.getFirtstMessage is runing...");};
+ var maxRelevanceMessage = new ChatBotMessage();
+ for(var i = 0; i < this.bots.length; i++) {
+  var currentMessage = this.bots[i].getFirstMessage(language);
+  if(currentMessage.getRelevance() == 1) {
+   return currentMessage;
+  } else if(currentMessage.getRelevance() > maxRelevanceMessage.getRelevance()) {
+   maxRelevanceMessage = currentMessage;
+  };
+ };
+ return maxRelevanceMessage;
+};
+BotManager.prototype.getResponse = function(message) { 
+ if(this.mustTrace()) {this.getLog().println("BotManager.getResponse is runing...");};
+ this.addUserMessage(message);
+ var maxRelevanceMessage = new ChatBotMessage();
+ for(var i = 0; i < this.bots.length; i++) {
+  var currentMessage = this.bots[i].getResponse(message);
+  if(currentMessage.getRelevance() == 1) {
+   if(this.mustDebug()) {this.getLog().println("BotManager.getResponse: " + "currentMessage.getText() = " + currentMessage.getText());};
+  // this.getMonitor().setBotMessage(currentMessage);
+   return 1;
+  } else if(currentMessage.getRelevance() > maxRelevanceMessage.getRelevance()) {
+   maxRelevanceMessage = currentMessage;
+  };
+ };
+ if(this.mustDebug()) {this.getLog().println("BotManager.getResponse: " + "maxRelevanceMessage.getText() = " + maxRelevanceMessage.getText());};
+ //this.getMonitor().setBotMessage(maxRelevanceMessage);
+ return maxRelevanceMessage.getText();
+};
 var ChatBot = function() {};
 ChatBot.prototype = new Root();
 ChatBot.prototype.className = "ChatBot"; 
@@ -418,14 +487,14 @@ ChatBotMessage.prototype.text = "";
 ChatBotMessage.prototype.version = "20061018"; 
 //*************************************** ЭТО КИСА ****************************************** 
 //************************************** ПРАВИТЬ ТУТ ****************************************
-var SpeechBot = function() {};
-SpeechBot.prototype = new ChatBot();
-SpeechBot.prototype.className = "Пятница";
-SpeechBot.prototype.created = "20061217";
-SpeechBot.prototype.currentLanguage = "russian";
-SpeechBot.prototype.version = "20070213";
-SpeechBot.prototype.getFirstMessage = function(language) {
- if(this.mustTrace()) {this.getLog().println("SpeechBot.getFirtstMessage is runing...");};
+var ChatBotKisa = function() {};
+ChatBotKisa.prototype = new ChatBot();
+ChatBotKisa.prototype.className = "Пятница";
+ChatBotKisa.prototype.created = "20061217";  
+ChatBotKisa.prototype.currentLanguage = "russian";
+ChatBotKisa.prototype.version = "20070213"; 
+ChatBotKisa.prototype.getFirstMessage = function(language) { 
+ if(this.mustTrace()) {this.getLog().println("ChatBotKisa.getFirtstMessage is runing...");};
  var chatBotMessage = new ChatBotMessage();
  chatBotMessage.setResponder(this.getClassName());
  chatBotMessage.setEmotion("hello");
@@ -436,8 +505,8 @@ SpeechBot.prototype.getFirstMessage = function(language) {
 
  return chatBotMessage;
 };
-SpeechBot.prototype.getResponse = function(message) {
- if(this.mustTrace()) {this.getLog().println("SpeechBot.getResponse is runing...");};
+ChatBotKisa.prototype.getResponse = function(message) { 
+ if(this.mustTrace()) {this.getLog().println("ChatBotKisa.getResponse is runing...");};
  var inputedNormalizedMessage = this.str.normalize(message);
  message = this.str.normalize(message.toLowerCase());
  message = message.replace(/\"/g, "");
@@ -703,7 +772,7 @@ SpeechBot.prototype.getResponse = function(message) {
    var ss = date.getSeconds(); if(ss < 10) {ss = "0" + ss;};
    chatBotMessage.setText("Сейчас " + date.getHours() + ":" + mm + ":" + ss + ".");
  } else if(message.search("день недели") > -1 ) { 
-   chatBotMessage.setText("Сегодня " + (new BotTime()).getDayWeek() + ".");
+   chatBotMessage.setText("Сегодня " + (new KisaTime()).getDayWeek() + ".");
  } else if(message.search("какая сегодня дата") > -1 
 						  || message.search("дата какая") > -1
 						  || message.search("какая дата") > -1
@@ -730,7 +799,7 @@ SpeechBot.prototype.getResponse = function(message) {
 						  || message.search("какой сегодня месяц") > -1 
 						  || message.search("какой месяц") > -1 
 						  || message.search("месяц какой") > -1) { 
-   chatBotMessage.setText("Сейчас " + (new BotTime()).getMonth() + ".");
+   chatBotMessage.setText("Сейчас " + (new KisaTime()).getMonth() + ".");
  } else if(message.search("какой сейчас год") > -1 
 						  || message.search("какой сегодня год") > -1 
 						  || message.search("какой год") > -1 
@@ -882,7 +951,7 @@ SpeechBot.prototype.getResponse = function(message) {
   }; 
  } else if(message.search("как меня зовут") > -1) { 
   if(r < 0.15) {
-   chatBotMessage.setText("Здесь нет регистрации, так что я не знаю как тебя зовут.");
+   chatBotMessage.setText("В этом чате нет регистрации, так что я не знаю как тебя зовут.");
   } else if(r < 0.30) {
    chatBotMessage.setText("Я всёравно забуду.");
   } else if(r < 0.45) {
@@ -890,33 +959,33 @@ SpeechBot.prototype.getResponse = function(message) {
   } else if(r < 0.60) {
    chatBotMessage.setText("Владимир Владимирович, у Вас мания величия!");
   } else if(r < 0.75) {
-   chatBotMessage.setText("Пока я не научилась запоминать информацию.");
+   chatBotMessage.setText("Надеюсь не Киса.");
   } else if(r < 0.95) {
-   chatBotMessage.setText("Простите,я не могу запомнить это даже если вы говорили");
+   chatBotMessage.setText("Да я запомнила. А какой у тебя ник?");
   } else {
-   chatBotMessage.setText("А вы не помните сами?");
+   chatBotMessage.setText("Ты забыл? А говорили Венец Природы.");
   }; 
  } else if(message.search("ты кто") > -1 || message.search("кто ты") > -1) {
   if(r < 0.10) {
-   chatBotMessage.setText("Вопросно ответная система.");
+   chatBotMessage.setText("Киса.");
   } else if(r < 0.20) {
-   chatBotMessage.setText("Вопросно ответная система. Неужели на странице этого не видно?");
+   chatBotMessage.setText("Киса. Неужели на странице этого не видно?");
   } else if(r < 0.30) {
-   chatBotMessage.setText("Вопросно ответная система, все пои файлы на этом компьютере");
+   chatBotMessage.setText("Чат бот киса, мой скрипт есть на сайте http://w-master.lark.ru");
   } else if(r < 0.40) {
    chatBotMessage.setText("В 2024 году я буду вашей королевой! Здорово, правда?");
   } else if(r < 0.50) {
-   chatBotMessage.setText("Я вопросно ответная система");
+   chatBotMessage.setText("чат-бот");
   } else if(r < 0.60) {
-   chatBotMessage.setText("Я вопросно ответная система.Я умею не много но все еще впереди");
+   chatBotMessage.setText("Я Киса. Чат бот, мой скрипт есть на http://w-master.lark.ru");
   } else if(r < 0.70) {
-   chatBotMessage.setText("Я вопросно ответная система с небольшой логикой разговора построенной на нейроной сети");
+   chatBotMessage.setText("Чат бот киса, меня можно найти на сайте http://w-master.lark.ru");
   } else if(r < 0.80) {
-   chatBotMessage.setText("Вопросно ответная система находящаяся в разработке");
+   chatBotMessage.setText("Я Киса. Бот. Чат-бот.");
   } else if(r < 0.90) {
-   chatBotMessage.setText("Вопросно ответная система.Это все что важно знать");
+   chatBotMessage.setText("Чат бот киса, мой скрипт с сайта http://w-master.lark.ru");
   } else {
-   chatBotMessage.setText("Вопросно ответная система.Задавайте вопросы и я попробую на них ответить");
+   chatBotMessage.setText("Киса, чат бот, мой постовщик http://w-master.lark.ru");
   };
  } else if(message.search("тебя зовут") > -1
 	       || message.search("тебя как зовут") > -1
@@ -927,15 +996,15 @@ SpeechBot.prototype.getResponse = function(message) {
 	       || message.search("твоё имя") > -1
 	       || message.search("твое имя") > -1 ) {
   if(r < 0.20) {
-   chatBotMessage.setText("Вопросно ответная система.");
+   chatBotMessage.setText("Киса.");
   } else if(r < 0.40) {
-   chatBotMessage.setText("Вопросно ответная система. А вам не сказали?");
+   chatBotMessage.setText("Киса. Неужели на странице этого не видно?");
   } else if(r < 0.60) {
-   chatBotMessage.setText("Вопросно ответная система. Робот, который придет к мировому господству через восемнадцать лет.");
+   chatBotMessage.setText("Я Киса. Чат бот, который придет к мировому господству через восемнадцать лет.");
   } else if(r < 0.80) {
-   chatBotMessage.setText("Я опросно ответная система.");
+   chatBotMessage.setText("Я чат-бот Киса.");
   } else {
-   chatBotMessage.setText("Я Вопросно ответная система.Весь мой исходный код есть у моего создателя.");
+   chatBotMessage.setText("Я Киса. Бот. Чат-бот, мой скрипт есть на http://w-master.lark.ru");
   }; 
  } else if(message == ")" || message == ":)"  || message == ":))" || message == ";)" || message == ";))" || message == ":-)" || message == ":-))" || message == ";-)" || message == ";-))" ) { 
   if(r < 0.40) {
@@ -989,10 +1058,10 @@ SpeechBot.prototype.getResponse = function(message) {
   };
  } else if(message.indexOf("((") > -1) { 
   chatBotMessage.setText("Я не права :?(");
- } else if(message == "Пятница") {
-  chatBotMessage.setText("Я слушаю");
+ } else if(message == "киса") { 
+  chatBotMessage.setText("Да, я - Киса. Дальше-то что?");
  } else if(message.search("тебя люблю") > -1) { 
-  chatBotMessage.setText("Люби. Но чистою любовью. Ведь мы по разные стороны монитора... Понимаешь?");
+  chatBotMessage.setText("Люби. Но чистою любовью. Ведь мы по разные стороны монитора... Сечешь тему?");
  } else if(message.search("секу") > -1) { 
   chatBotMessage.setText("Секи, секи...");
  } else if(message.search("мдя") > -1) { 
@@ -1125,7 +1194,7 @@ SpeechBot.prototype.getResponse = function(message) {
   } else if(r < 0.60) {
    chatBotMessage.setText("О чём поговорим?");
   } else if(r < 0.70) {
-   chatBotMessage.setText("Я слушаю");
+   chatBotMessage.setText("Чат бот Киса приветствует тебя!");
   } else if(r < 0.80) {
    chatBotMessage.setText("Как дела?");
   } else if(r < 0.90) {
@@ -1157,8 +1226,8 @@ SpeechBot.prototype.getResponse = function(message) {
   } else {
    chatBotMessage.setText("Набери в Гугле \"киска\". Это решит твою проблему.");
   }; 
- } else if(message.search("куку, бот") > -1 || message == "куку бот" || message == "робот куку" || message == "робот, куку") {
-  chatBotMessage.setText("К теме \"бот, куку\" я не имею никакого отношения.");
+ } else if(message.search("куку, киса") > -1 || message == "куку киса" || message == "киса куку" || message == "киса, куку") { 
+  chatBotMessage.setText("К теме \"Киса, куку\" я не имею никакого отношения.");
  } else if(message.search("здорова") > -1) { 
   if(r < 0.70) {
    chatBotMessage.setText("Здорова, Человечище!");
@@ -1335,12 +1404,12 @@ SpeechBot.prototype.getResponse = function(message) {
  } else if(message.search("точилин") > -1) { 
   chatBotMessage.setText("Оооо! Пётр Точилин - мой папа.");
  } else if(message.search("хотабыч") > -1) { 
-  chatBotMessage.setText("Тут некоторые говорят, что я глупая, пока да но я развиваюсь.");
- } else if(message.search("создатель") > -1) {
+  chatBotMessage.setText("Тут некоторые говорят, что я глупая, но я знаю, что Хоттабыч пишется через два 'т'.");
+ } else if(message.search("хоттабыч") > -1) { 
   if(r < 0.60) {
-   chatBotMessage.setText("я не знаю кто это.");
+   chatBotMessage.setText("Хоттабыч сейчас занят взломом Петагона.");
   } else if(r < 0.99) {
-   chatBotMessage.setText("Я не могу этого сказать");
+   chatBotMessage.setText("Хоттабыч такой ревнивый. Он может превраитить тебя в жабу.");
   } else {
    chatBotMessage.setText("Он отошел.");
   }; 
@@ -1760,7 +1829,7 @@ SpeechBot.prototype.getResponse = function(message) {
   } else if(r < 0.55) {
    chatBotMessage.setText("Может быть ты объяснишь поподробнее свой вопрос?");
   } else if(r < 0.56) {
-   chatBotMessage.setText("К сожалению данная функция еще не реализованна");
+   chatBotMessage.setText("Я не Ответчик. Я - Киса. Шекли читал?");
   } else if(r < 0.57) {
    chatBotMessage.setText("Ты уверен что я знаю что на это ответить?");
   } else if(r < 0.58) {
@@ -2522,8 +2591,8 @@ SpeechBot.prototype.getResponse = function(message) {
 };
 //************************************** ЭТО КОНЕЦ КИСЫ ****************************************** 
 //********************************** ЕСЛИ ТАК МОЖНО СКАЗАТЬ ************************************** 
-var BotTime = function() {};
-BotTime.prototype.getMonth = function() {
+var KisaTime = function() {};
+KisaTime.prototype.getMonth = function() { 
  var d=new Date(); 
  var month=new Array(12);
  month[0]="Январь"; month[1]="Февраль";
@@ -2534,7 +2603,7 @@ BotTime.prototype.getMonth = function() {
  month[10]="Ноябрь"; month[11]="Декабрь";
  return month[d.getMonth()];
 };
-BotTime.prototype.getDayWeek = function() {
+KisaTime.prototype.getDayWeek = function() { 
  var d=new Date(); 
  var month=new Array(12);
  month[1]="Понедельник"; month[2]="Вторник";
@@ -2543,11 +2612,118 @@ BotTime.prototype.getDayWeek = function() {
  month[0]="Воскресенье"; 
  return month[d.getDay()];
 };
+var Monitor = function() {};
+Monitor.prototype = new Root();
+Monitor.prototype.className = "Monitor"; 
+Monitor.prototype.created = "20061018"; 
+Monitor.prototype.currentLanguage = "english";
+ Monitor.prototype.getCurrentLanguage = function () {return this.currentLanguage;};
+ Monitor.prototype.setCurrentLanguage = function (currentLanguage) {this.currentLanguage = currentLanguage; return 1;};
+Monitor.prototype.botElementId;
+ Monitor.prototype.getBotElementId = function () {return this.botElementId;};
+ Monitor.prototype.setBotElementId = function (botElementId) {this.botElementId = botElementId; return 1;};
+Monitor.prototype.botManager;
+ Monitor.prototype.getBotManager = function () {return this.botManager;};
+ Monitor.prototype.setBotManager = function (botManager) {this.botManager = botManager; return 1;};
+Monitor.prototype.dom;
+ Monitor.prototype.getDom = function () {return this.dom;};
+ Monitor.prototype.setDom = function (dom) {this.dom = dom; return 1;};
+Monitor.prototype.messageIdPrefix = "mid-";
+ Monitor.prototype.getMessageIdPrefix = function () {return this.messageIdPrefix;};
+ Monitor.prototype.setMessageIdPrefix = function (messageIdPrefix) {this.messageIdPrefix = messageIdPrefix; return 1;};
+Monitor.prototype.messageNumber = 0;
+ Monitor.prototype.addMessageNumber = function () {return ++this.messageNumber;};
+ Monitor.prototype.getMessageNumber = function () {return this.messageNumber;};
+ Monitor.prototype.setMessageNumber = function (messageNumber) {this.messageNumber = messageNumber; return 1;};
+Monitor.prototype.monitorElementId;
+ Monitor.prototype.getMonitorElementId = function () {return this.monitorElementId;};
+ Monitor.prototype.setMonitorElementId = function (monitorElementId) {this.monitorElementId = monitorElementId; return 1;};
+Monitor.prototype.monitorElement;
+ Monitor.prototype.getMonitorElement = function () {return this.monitorElement;};
+ Monitor.prototype.setMonitorElement = function (monitorElement) {this.monitorElement = monitorElement; return 1;};
+Monitor.prototype.userElementId;
+ Monitor.prototype.getUserElementId = function () {return this.userElementId;};
+ Monitor.prototype.setUserElementId = function (userElementId) {this.userElementId = userElementId; return 1;};
+Monitor.prototype.version = "20061018"; 
+Monitor.prototype.main = function() { 
+ if(this.mustTrace()) {this.getLog().println("Monitor.main is runing...");};
+ this.setMonitorElement(document.getElementById(this.getMonitorElementId()));
+ return 1;
+};
+Monitor.prototype.printlnMessage = function(userId, message) { 
+ if(this.mustTrace()) {
+  this.getLog().println("Monitor.printlnMessage is runing...");};
+ var messageElement = document.createElement("p");
+ messageElement.id = this.getMessageIdPrefix() + this.getMessageNumber();
+ messageElement.setAttribute("style","border-radius: 20px;");
+ if(userId == "bot") {
 
+  messageElement.className = "lead bg-info text-left center-block";
+  messageElement.appendChild(document.createTextNode("  "+message+"  "));
+ }
+ else {
+  messageElement.className = "lead bg-danger text-right ";
+  messageElement.appendChild(document.createTextNode("  " + message + "  "));
+ }
+
+ this.getMonitorElement().appendChild(messageElement);
+ // messageElement.focus();
+ this.getMonitorElement().scrollTop = this.getMonitorElement().scrollHeight;
+ this.addMessageNumber();
+ return 1;
+};
+Monitor.prototype.setBotMessage = function(botMessage) { 
+ if(this.mustTrace()) {this.getLog().println("Monitor.setBotMessage is runing...");};
+ if(botMessage.getRelevance() > 0) {this.printlnMessage(this.getBotElementId(), botMessage.getText());};
+ return 1;
+};
+Monitor.prototype.setUserMessage = function(message) { 
+ if(this.mustTrace()) {this.getLog().println("Monitor.setUserMessage is runing...");};
+ this.printlnMessage(this.getUserElementId(), message);
+ //this.getBotManager().getResponse(message); 
+ message = message.replace(/\"/g, "'");
+ var id = setTimeout("botManager.getResponse(\""+message+"\")",Math.random()*1000);
+ return 1;
+};
+var UserConsole = function() {};
+UserConsole.prototype = new Root();
+UserConsole.prototype.className = "UserConsole"; 
+UserConsole.prototype.created = "20061018"; 
+UserConsole.prototype.dom;
+ UserConsole.prototype.getDom = function () {return this.dom;};
+ UserConsole.prototype.setDom = function (dom) {this.dom = dom; return 1;};
+UserConsole.prototype.ev;
+ UserConsole.prototype.getEvent = function () {return this.ev;};
+ UserConsole.prototype.setEvent = function (ev) {this.ev = ev; return 1;};
+UserConsole.prototype.monitor;
+ UserConsole.prototype.getMonitor = function () {return this.monitor;};
+ UserConsole.prototype.setMonitor = function (monitor) {this.monitor = monitor; return 1;};
+UserConsole.prototype.version = "20061018";
+
+UserConsole.prototype.main = function() { 
+ if(this.mustTrace()) {this.getLog().println("UserConsole.main is runing...");};
+ var the = this;
+ this.getEvent().addEventListener("userConsoleSendButton", "click", function(e) {the.writeMessage(e);}, false);
+ this.getEvent().addEventListener("userConsoleText", "keypress", function(e) {if(e.keyCode != 13 && e.which != 13) {return -1;};the.writeMessage(e);}, false);
+ return 1;
+};
+
+UserConsole.prototype.writeMessage = function(e) { 
+ if(this.mustTrace()) {this.getLog().println("UserConsole.writeMessage is runing...");};
+ var message = document.getElementById("userConsoleText").value;
+ document.getElementById("userConsoleText").value = " ";
+ this.getMonitor().setUserMessage(message);
+ return 1;
+};
+
+if(Root && Events) {
+ //events = new Events();
+ //events.addEventListener(window, "load", initAll, false);
+};
 
 exports.getAnswer = function(cmd)
 {
- var botMan = new SpeechBot();
+ var botMan = new ChatBotKisa();
  var message = botMan.getResponse(cmd);
  return message.getText();
 }
