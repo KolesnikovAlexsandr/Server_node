@@ -9,11 +9,14 @@ var voices = speechSynthesis.getVoices();
 var messegeField ;document.getElementById("monitor");
 var BotMessageId = 0;
 var UserMessageId = 0;
-
 var callProgram = true;
-var stopRecognizer = false;
+var work = false;
+var transcription1;
 function start() {
     recognizer.start();
+}
+function setWork(bool) {
+    work = bool;
 }
 
 
@@ -48,32 +51,32 @@ function speech(text) {
 // Используем колбек для обработки результатов
 recognizer.onresult = function (event) {
     var result = event.results[event.resultIndex];
-    console.log();
     if (result.isFinal) {
+        document.getElementById("userConsoleText").value ="";
         var cmd = result[0].transcript.toLowerCase();
+        StopWork(cmd);
 
-        if( !getcmd(cmd) )
-        {
-            cmd = findMath(cmd);
-            UserMessageId ++;
-            PrintMessage("user" , cmd);
-            var request = new XMLHttpRequest();
-            request.open("POST",'index',true);
-            request.send("user:"+cmd);
-            request.onreadystatechange = function()
-            {
-                if(request.readyState == 4)
-                {
-                    BotMessageId ++;
-                    PrintMessage("bot",request.responseText);
+        if(work) {
+            if (!getcmd(cmd)) {
+                cmd = findMath(cmd);
+                UserMessageId++;
+                PrintMessage("user", cmd);
+                var request = new XMLHttpRequest();
+                request.open("POST", 'index', true);
+                request.send("user:" + cmd);
+                request.onreadystatechange = function () {
+                    if (request.readyState == 4) {
+                        BotMessageId++;
+                        PrintMessage("bot", request.responseText);
+                    }
                 }
+
             }
 
         }
-        else{
 
-        }
-
+        StartWork(cmd);
+        
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
         document.getElementById("userConsoleText").value = result[0].transcript;
@@ -108,4 +111,13 @@ var PrintMessage = function(person , message)
 }
 // Начинаем слушать микрофон и распознавать голос
 
-
+function restart() {
+    try
+    {
+        start();
+        console.log("not work - restart");
+    }catch(e){
+        console.log("work");
+    }
+}
+setInterval(restart, 1000);

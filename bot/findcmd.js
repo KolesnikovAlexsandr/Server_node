@@ -5,10 +5,15 @@
 var optionsGoogle = ["найди в гугле" , "загугли" , "поиск в гугл" ,"открой гугл" ,"открой google" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionsWiki = ["найди в википедии" , "открой википедию" ,"открой wiki" , "открой вики" , "найди в вики" , "найди в википедии о" ,"найди в вики о"];
 var optionMath =[ ["минус","-"],["и минус","-"],["отнять","-"],["и отнять" , "-"],["плюс","+"],["и плюс","+"],["и прибавить","+"],["прибавить","+"],["умножить на" , "*"],["и умножить на" , "*"],["разделить на","/"],["и разделить на","/"]];
-
-
+var optionControlStop = ["закончить разговор","стоп запись","останавить запись","стоп","закончить"];
+var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
+var answerBy = ["Пока","конец работы","By by"];
+var answerHello = ["Здравствуйте сэр", "привет","Добрый день","начало работы"];
 var findIndex;
 
+function Random(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 function getcmd(cmd)
 {
     cmd = cmd.toLowerCase();
@@ -33,9 +38,35 @@ function getcmd(cmd)
             findcmd =  true;
         }
     });
+
     return findcmd;
 }
 
+function StartWork(cmd)
+{
+    if(!work)
+    {
+        optionControlStart.forEach(function (item) {
+            if(cmd.indexOf(item)!=-1) {
+                setWork(true);
+                PrintMessage("bot",answerHello[Random(0,3)]);
+                return 0;
+            }
+        });
+    }
+}
+
+function StopWork(cmd) {
+    if(work) {
+        optionControlStop.forEach(function (item) {
+            if (cmd.indexOf(item) != -1) {
+                setWork(false);
+                PrintMessage("bot", answerBy[Random(0, 2)]);
+                return 0;
+            }
+        });
+    }
+}
 
 function  openGoogle(cmd , index) {
     window.open("https://www.google.by/search?q=" + cmd.substring(index), '_blank');
