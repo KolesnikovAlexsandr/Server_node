@@ -5,13 +5,16 @@
 var respond = '{"id":"*","answer":"*"}';
 
 var recognizer = new webkitSpeechRecognition();
-var voices = speechSynthesis.getVoices();
+var msg = new SpeechSynthesisUtterance();
+var voices = window.speechSynthesis.getVoices();
 var messegeField ;document.getElementById("monitor");
 var BotMessageId = 0;
 var UserMessageId = 0;
 var callProgram = true;
 var work = false;
 var transcription1;
+var hiSpeeck = false;
+
 function start() {
     recognizer.start();
 }
@@ -26,26 +29,21 @@ recognizer.continuous = true;
 
 // Какой язык будем распознавать?
 recognizer.lang = 'ru-RU';
-
+msg.onend = function (event) {
+    hiSpeeck = false;
+}
 function speech(text) {
     // Create a new instance of SpeechSynthesisUtterance.
-    var msg = new SpeechSynthesisUtterance();
 
-    // Set the text.
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[38]; // Note: some voices don't support altering params
+    msg.voiceURI = 'native';
+    msg.volume = 1; // 0 to 1
+    msg.rate = 1; // 0.1 to 10
+    msg.pitch = 2; //0 to 2
     msg.text = text;
-
-    // Set the attributes.
-    msg.volume = parseFloat(100);
-    msg.rate = parseFloat(5);
-    msg.pitch = parseFloat(5);
-
-    // If a voice has been selected, find the voice and set the
-    // utterance instance's voice attribute.
-        msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == "Veena"; })[0];
-
-
-    // Queue this utterance.
-    window.speechSynthesis.speak(msg);
+    msg.lang = 'ru-Ru';
+    speechSynthesis.speak(msg);
 }
 
 // Используем колбек для обработки результатов
@@ -97,6 +95,9 @@ var PrintMessage = function(person , message)
     messageElement.setAttribute("style","border-radius: 20px;");
     if(person == "bot")
     {
+        recognizer.stop();
+        hiSpeeck = true;
+        speech(message);
         messageElement.id = BotMessageId;
         messageElement.className = "lead bg-info text-left center-block";
         messageElement.appendChild(document.createTextNode("  "+message+"  "));
@@ -114,8 +115,10 @@ var PrintMessage = function(person , message)
 function restart() {
     try
     {
-        start();
-        console.log("not work - restart");
+        if(!hiSpeeck) {
+            start();
+            console.log("not work - restart");
+        }
     }catch(e){
         console.log("work");
     }

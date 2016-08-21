@@ -8,11 +8,13 @@ var optionsGoogleMap = ["найди на карте","где находится"
 var optionMath =[ ["минус","-"],["и минус","-"],["отнять","-"],["и отнять" , "-"],["плюс","+"],["и плюс","+"],["и прибавить","+"],["прибавить","+"],["умножить на" , "*"],["и умножить на" , "*"],["разделить на","/"],["и разделить на","/"]];
 var optionControlStop = ["закончить разговор","стоп запись","останавить запись","стоп","закончить"];
 var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
+var optionClose = ["закрой страницу","закрыть страницу","закрыть вкладку" ,"закрой текущую вкладку"];
 var answerBy = ["Пока","конец работы","By by"];
 var answerOk = ["Хорошо","Сделано","Окей","Вот что я нашла"];
 var answerHello = ["Здравствуйте сэр", "привет","Добрый день","начало работы"];
-var findIndex;
 
+var findIndex;
+var tabs;
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -55,6 +57,17 @@ function getcmd(cmd)
         PrintMessage("bot",answerOk[Random(0,3)]);
     }
 
+    optionClose.forEach(function (item) {
+
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            tabs.close();
+            findcmd =  true;
+        }
+    });
+
+
     return findcmd;
 }
 
@@ -85,16 +98,16 @@ function StopWork(cmd) {
 }
 
 function  openGoogle(cmd , index) {
-    window.open("https://www.google.by/search?q=" + cmd.substring(index), '_blank');
+   tabs = window.open("https://www.google.by/search?q=" + cmd.substring(index), '_blank');
 }
 
 function  openWiki(cmd , index) {
-    window.open("https://ru.wikipedia.org/wiki/" + cmd.substring(index), '_blank');
+    tabs = window.open("https://ru.wikipedia.org/wiki/" + cmd.substring(index), '_blank');
 }
 
 function openGoogleMap(cmd , index)
 {
-    window.open("https://www.google.ru/maps/place/" + cmd.substring(index), '_blank');
+    tabs = window.open("https://www.google.ru/maps/place/" + cmd.substring(index), '_blank');
 }
 
 function findMath(cmd) {
