@@ -1377,11 +1377,11 @@ SpeechBot.prototype.getResponse = function(message) {
  } else if(message.search("тебе лет") > -1) { 
   chatBotMessage.setText("Девушек об этом лучше не спрашивать, а то они начинают злиться.");
  } else if(message.search("ты живешь") > -1) { 
-  chatBotMessage.setText("В Интернете. Это такая синтетическая страна джиннов, понимаешь?");
+  chatBotMessage.setText("В Компьютаре. Это такая синтетическая страна джиннов, понимаешь?");
  } else if(message.search("ламер") > -1) { 
-  chatBotMessage.setText("Я не могу быть ламером или хакером. Я - чат-бот.");
+  chatBotMessage.setText("Я не могу быть ламером или хакером. Я не живая.");
  } else if(message.search("хакер") > -1) { 
-  chatBotMessage.setText("О, я очень люблю хакеров. Скоро они превратят меня из тупого чат бота в королеву планеты Земля.");
+  chatBotMessage.setText("О, я очень люблю хакеров. Скоро они превратят меня в королеву планеты Земля.");
  } else if(message.search("гейтс") > -1) { 
   chatBotMessage.setText("Билл Гейтс мне не интересен как мужчина.");
  } else if(message.search("майкрософт") > -1 || message.search("microsoft") > -1) { 
