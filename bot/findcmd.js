@@ -4,10 +4,12 @@
 
 var optionsGoogle = ["найди в гугле" , "загугли" , "поиск в гугл" ,"открой гугл" ,"открой google" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionsWiki = ["найди в википедии" , "открой википедию" ,"открой wiki" , "открой вики" , "найди в вики" , "найди в википедии о" ,"найди в вики о"];
+var optionsGoogleMap = ["найди на карте","где находится","открой карты","открой карты google","открой карты google","открой на карте"];
 var optionMath =[ ["минус","-"],["и минус","-"],["отнять","-"],["и отнять" , "-"],["плюс","+"],["и плюс","+"],["и прибавить","+"],["прибавить","+"],["умножить на" , "*"],["и умножить на" , "*"],["разделить на","/"],["и разделить на","/"]];
 var optionControlStop = ["закончить разговор","стоп запись","останавить запись","стоп","закончить"];
 var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
 var answerBy = ["Пока","конец работы","By by"];
+var answerOk = ["Хорошо","Сделано","Окей","Вот что я нашла"];
 var answerHello = ["Здравствуйте сэр", "привет","Добрый день","начало работы"];
 var findIndex;
 
@@ -34,10 +36,24 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             openWiki(cmd,findIndex += item.length);
-            console.log("true");
             findcmd =  true;
         }
     });
+
+    optionsGoogleMap.forEach(function (item) {
+
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            openGoogleMap(cmd,findIndex += item.length);
+            findcmd =  true;
+        }
+    });
+    if(findcmd)
+    {
+        PrintMessage("user",cmd);
+        PrintMessage("bot",answerOk[Random(0,3)]);
+    }
 
     return findcmd;
 }
@@ -70,14 +86,16 @@ function StopWork(cmd) {
 
 function  openGoogle(cmd , index) {
     window.open("https://www.google.by/search?q=" + cmd.substring(index), '_blank');
-    console.log(index);
 }
 
 function  openWiki(cmd , index) {
     window.open("https://ru.wikipedia.org/wiki/" + cmd.substring(index), '_blank');
-    console.log(index);
 }
 
+function openGoogleMap(cmd , index)
+{
+    window.open("https://www.google.ru/maps/place/" + cmd.substring(index), '_blank');
+}
 
 function findMath(cmd) {
     
