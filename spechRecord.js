@@ -12,7 +12,7 @@ var BotMessageId = 0;
 var UserMessageId = 0;
 var callProgram = true;
 var work = false;
-var transcription1;
+var transcription = 0;
 var hiSpeeck = false;
 
 function start() {
@@ -32,6 +32,7 @@ recognizer.lang = 'ru-RU';
 msg.onend = function (event) {
     hiSpeeck = false;
 }
+
 function speech(text) {
     // Create a new instance of SpeechSynthesisUtterance.
 
