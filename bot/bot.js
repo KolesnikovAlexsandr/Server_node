@@ -2547,9 +2547,13 @@ BotTime.prototype.getDayWeek = function() {
 
 exports.getAnswer = function(cmd)
 {
- var botMan = new SpeechBot();
- var message = botMan.getResponse(cmd);
- return message.getText();
+  var serverAnswer;
+  cmd = findMath(cmd);
+  var getcmd(cmd)
+  var botMan = new SpeechBot();
+  var message = botMan.getResponse(cmd);
+  return message.getText();
+
 }
 
  

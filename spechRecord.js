@@ -3,6 +3,14 @@
  */
 // Создаем распознаватель
 var respond = '{"id":"*","answer":"*"}';
+var optionControlStop = ["закончить разговор","завершить работу","стоп запись","останавить запись","стоп","закончить"];
+var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
+var answerBy = ["Пока","конец работы","By by"];
+var answerHello = ["Здравствуйте сэр", "привет","Добрый день","начало работы"];
+
+function Random(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 var recognizer = new webkitSpeechRecognition();
 var msg = new SpeechSynthesisUtterance();
@@ -20,6 +28,32 @@ function start() {
 }
 function setWork(bool) {
     work = bool;
+}
+
+function StartWork(cmd)
+{
+    if(!work)
+    {
+        optionControlStart.forEach(function (item) {
+            if(cmd.indexOf(item)!=-1) {
+                setWork(true);
+                PrintMessage("bot",answerHello[Random(0,3)]);
+                return 0;
+            }
+        });
+    }
+}
+
+function StopWork(cmd) {
+    if(work) {
+        optionControlStop.forEach(function (item) {
+            if (cmd.indexOf(item) != -1) {
+                setWork(false);
+                PrintMessage("bot", answerBy[Random(0, 2)]);
+                return 0;
+            }
+        });
+    }
 }
 
 
@@ -56,8 +90,6 @@ recognizer.onresult = function (event) {
         StopWork(cmd);
 
         if(work) {
-            if (!getcmd(cmd)) {
-                cmd = findMath(cmd);
                 UserMessageId++;
                 PrintMessage("user", cmd);
                 var request = new XMLHttpRequest();
@@ -69,9 +101,6 @@ recognizer.onresult = function (event) {
                         PrintMessage("bot", request.responseText);
                     }
                 }
-
-            }
-
         }
 
         StartWork(cmd);
