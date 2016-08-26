@@ -2,10 +2,10 @@
  * Created by sasha on 08/08/16.
  */
 
-var optionGoogleSerch = ["найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
+var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionGoogleOpen = ["открой google","открой гугл"];
 
-var optionWikiSerch = ["найди в википедии" , "найди в вики" , "найди в википедии о" ,"найди в вики о"];
+var optionWikiSerch = ["найди в википедии", "найди в википедии"];
 var optionWikiOpen = ["открой википедию" ,"открой wiki" , "открой вики","открой wikipedia"];
 
 var optionGoogleMapSerch = ["найди на карте","где находится","открой на карте","покажи на карте"];
@@ -16,6 +16,7 @@ var optionMath =[ ["минус","-"],["и минус","-"],["отнять","-"],
 var answerOk = ["Хорошо","Сделано","Окей"];
 var answerSerch = ["Вот что я нашла","Поиск выполнен","Вот ответ на ваш запрос"];
 
+var optionReload = ["перезагрузка","перезагрузись","рестарт"]
 var findIndex;
 var tabs;
 function Random(min, max){
@@ -28,21 +29,18 @@ exports.getcmd = function(cmd)
     var findcmd = false;
 
     optionGoogleSerch.forEach(function (item) {
-
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd = "answer:"+answerSerch[Random(0,2)]+" "+openGoogle(cmd,findIndex += item.length);
+            findcmd = "answer:"+answerSerch[Random(0,2)]+"***"+openGoogle(cmd,findIndex += item.length);
         }
     });
 
     optionGoogleOpen.forEach(function (item) {
-
-
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd = "answer:"+answerOk[Random(0,2)]+" "+"openPage:google.com";
+            findcmd = "answer:"+answerOk[Random(0,2)]+"***"+"openPage:google.com";
         }
     });
 
@@ -52,7 +50,7 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerSerch[Random(0,2)]+" "+"openPage:"+openWiki(cmd,findIndex += item.length);
+            findcmd =  "answer:"+answerSerch[Random(0,2)]+"***"+openWiki(cmd,findIndex += item.length);
         }
     });
 
@@ -61,7 +59,7 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerOk[Random(0,2)]+" "+"openPage:ru.wikipedia.org/";
+            findcmd =  "answer:"+answerOk[Random(0,2)]+"***"+"openPage:ru.wikipedia.org/";
         }
     });
 
@@ -70,8 +68,7 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            openGoogleMap(cmd,findIndex += item.length);
-            findcmd =  "answer:"+answerSerch[Random(0,2)]+" "+openGoogleMap(cmd,findIndex += item.length);;
+            findcmd =  "answer:"+answerSerch[Random(0,2)]+"***"+openGoogleMap(cmd,findIndex += item.length);;
         }
     });
 
@@ -80,7 +77,16 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerOk[Random(0,2)]+" "+"openPage:google.ru/maps";
+            findcmd =  "answer:"+answerOk[Random(0,2)]+"***"+"openPage:google.ru/maps";
+        }
+    });
+
+    optionReload.forEach(function (item) {
+
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            findcmd = "restart";
         }
     });
     return findcmd;
@@ -88,16 +94,16 @@ exports.getcmd = function(cmd)
 
 
 function  openGoogle(cmd , index) {
-   return " openPage:https://www.google.by/search?q=" + cmd.substring(index);
+   return "openPage:google.by/search?q=" + cmd.substring(index);
 }
 
 function  openWiki(cmd , index) {
-    return "openPage:https://ru.wikipedia.org/wiki/" + cmd.substring(index);
+    return "openPage:ru.wikipedia.org/wiki/" + cmd.substring(index);
 }
 
 function openGoogleMap(cmd , index)
 {
-    return "openPage:https://www.google.ru/maps/place/" + cmd.substring(index);
+    return "openPage:google.ru/maps/place/" + cmd.substring(index);
 }
 
 exports.findMath = function(cmd) {

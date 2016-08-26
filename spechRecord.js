@@ -3,10 +3,11 @@
  */
 // Создаем распознаватель
 var respond = '{"id":"*","answer":"*"}';
-var optionControlStop = ["закончить разговор","завершить работу","стоп запись","останавить запись","стоп","закончить"];
+var optionControlStop = ["закончить разговор","завершение работы","завершить работу","стоп запись","останавить запись","стоп","закончить"];
 var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
-var answerBy = ["Пока","конец работы","By by"];
-var answerHello = ["Здравствуйте сэр", "привет","Добрый день","начало работы"];
+var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
+var answerBy = ["Завершение работы","Работа завершена","Конец Работы"];
+var optionAnswer = ["answer:","openPage:","restart"];
 
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -98,8 +99,7 @@ recognizer.onresult = function (event) {
                 request.onreadystatechange = function () {
                     if (request.readyState == 4) {
                         BotMessageId++;
-                        console.log(request.responseText);
-                        PrintMessage("bot", request.responseText);
+                        ParseAnswer(request.responseText);
                     }
                 }
         }
@@ -155,3 +155,22 @@ function restart() {
     }
 }
 setInterval(restart, 1000);
+
+var ParseAnswer = function(cmd)
+{
+    cmd = cmd.split("***");
+    cmd.forEach(function (item) {
+        if(item.indexOf(optionAnswer[0]) != -1)
+        {
+            PrintMessage("bot",item.substring(optionAnswer[0].length));
+        }
+        if(item.indexOf(optionAnswer[1]) != -1)
+        {
+            window.open("http://"+item.substring(optionAnswer[1].length), "_blank");
+        }
+        if(item.indexOf(optionAnswer[2]) != -1)
+        {
+            location.reload();
+        }
+    });
+}
