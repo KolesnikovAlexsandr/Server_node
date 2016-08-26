@@ -22,10 +22,10 @@ function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getcmd(cmd)
+exports.getcmd = function(cmd)
 {
     cmd = cmd.toLowerCase();
-    var findcmd;
+    var findcmd = false;
 
     optionGoogleSerch.forEach(function (item) {
 
@@ -33,7 +33,6 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             findcmd = "answer:"+answerSerch[Random(0,2)]+" "+openGoogle(cmd,findIndex += item.length);
-            return findcmd;
         }
     });
 
@@ -44,7 +43,6 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             findcmd = "answer:"+answerOk[Random(0,2)]+" "+"openPage:google.com";
-            return findcmd;
         }
     });
 
@@ -55,7 +53,6 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             findcmd =  "answer:"+answerSerch[Random(0,2)]+" "+"openPage:"+openWiki(cmd,findIndex += item.length);
-            return findcmd;
         }
     });
 
@@ -65,7 +62,6 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             findcmd =  "answer:"+answerOk[Random(0,2)]+" "+"openPage:ru.wikipedia.org/";
-            return findcmd;
         }
     });
 
@@ -75,11 +71,19 @@ function getcmd(cmd)
         if(findIndex != -1)
         {
             openGoogleMap(cmd,findIndex += item.length);
-            findcmd =  "answer:"+answerOk[Random(0,2)]+" "+openGoogleMap(cmd,findIndex += item.length);;
-            return findcmd;
+            findcmd =  "answer:"+answerSerch[Random(0,2)]+" "+openGoogleMap(cmd,findIndex += item.length);;
         }
     });
-    return false;
+
+    optionGoogleMapOpen.forEach(function (item) {
+
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            findcmd =  "answer:"+answerOk[Random(0,2)]+" "+"openPage:google.ru/maps";
+        }
+    });
+    return findcmd;
 }
 
 
@@ -96,7 +100,7 @@ function openGoogleMap(cmd , index)
     return "openPage:https://www.google.ru/maps/place/" + cmd.substring(index);
 }
 
-function findMath(cmd) {
+exports.findMath = function(cmd) {
     
     optionMath.forEach(function (item) {
         if(cmd.indexOf(item[0]) != -1)

@@ -2544,15 +2544,22 @@ BotTime.prototype.getDayWeek = function() {
  return month[d.getDay()];
 };
 
+var findMath = require("./findcmd.js").findMath;
+var getcmd = require("./findcmd.js").getcmd;
 
 exports.getAnswer = function(cmd)
 {
-  var serverAnswer;
   cmd = findMath(cmd);
-  var getcmd(cmd)
-  var botMan = new SpeechBot();
-  var message = botMan.getResponse(cmd);
-  return message.getText();
+  var result = getcmd(cmd);
+  console.log(result);
+  if(!result)
+  {
+    var botMan = new SpeechBot();
+    var message = botMan.getResponse(cmd);
+    result = "answer:" + message.getText();
+  }
+
+  return result;
 
 }
 

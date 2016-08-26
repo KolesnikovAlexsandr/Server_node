@@ -98,6 +98,7 @@ recognizer.onresult = function (event) {
                 request.onreadystatechange = function () {
                     if (request.readyState == 4) {
                         BotMessageId++;
+                        console.log(request.responseText);
                         PrintMessage("bot", request.responseText);
                     }
                 }
