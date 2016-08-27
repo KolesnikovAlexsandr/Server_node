@@ -18,8 +18,6 @@ function index(response , postDate) {
         response.end();
     }
     else {
-
-
         fs = require('fs');
         fs.readFile('./index.html', function (err, info) {
             if (err) throw err;

@@ -12,8 +12,6 @@ function route(handle , pathname , response , postDate) {
     else {
         handle["file"](response,pathname);
     }
-
-
 }
 
 exports.route = route;

@@ -4,7 +4,7 @@
 // Создаем распознаватель
 var respond = '{"id":"*","answer":"*"}';
 var optionControlStop = ["закончить разговор","завершение работы","завершить работу","стоп запись","останавить запись","стоп","закончить"];
-var optionControlStart = ["начать работу","пятница","начать запись","эй пятница","работай","старт"];
+var optionControlStart = ["начать работу","начать запись","эй пятница","пятница","работай","старт"];
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
 var answerBy = ["Завершение работы","Работа завершена","Конец Работы"];
 var optionAnswer = ["answer:","openPage:","restart"];
@@ -33,25 +33,27 @@ function setWork(bool) {
 
 function StartWork(cmd)
 {
+    var find = false;
     if(!work)
     {
         optionControlStart.forEach(function (item) {
-            if(cmd.indexOf(item)!=-1) {
+            if(cmd.indexOf(item)!=-1 && !find) {
                 setWork(true);
                 PrintMessage("bot",answerHello[Random(0,3)]);
-                return 0;
+                find = true;
             }
         });
     }
 }
 
 function StopWork(cmd) {
+    find = false;
     if(work) {
         optionControlStop.forEach(function (item) {
-            if (cmd.indexOf(item) != -1) {
+            if (cmd.indexOf(item) != -1 && !find) {
                 setWork(false);
                 PrintMessage("bot", answerBy[Random(0, 2)]);
-                return 0;
+                find = true;
             }
         });
     }
