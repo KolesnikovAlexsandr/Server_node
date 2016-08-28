@@ -2546,19 +2546,36 @@ BotTime.prototype.getDayWeek = function() {
 
 var findMath = require("./findcmd.js").findMath;
 var getcmd = require("./findcmd.js").getcmd;
+var useLastCmd = require("./findcmd.js").useLastCmd;
+var lastCmd = "";
 
 exports.getAnswer = function(cmd)
 {
-  cmd = findMath(cmd);
-  var result = getcmd(cmd);
-  console.log(result);
-  if(!result)
+  if(useLastCmd(cmd))
   {
+   cmd = lastCmd;
+   cmd = findMath(cmd);
+   var result = getcmd(cmd);
+   console.log(result);
+   if(!result)
+   {
     var botMan = new SpeechBot();
     var message = botMan.getResponse(cmd);
     result = "answer:" + message.getText();
+   }
   }
-
+  else {
+    lastCmd = cmd;
+    cmd = findMath(cmd);
+    var result = getcmd(cmd);
+    console.log(result);
+    if (!result) {
+     var botMan = new SpeechBot();
+     var message = botMan.getResponse(cmd);
+     result = "answer:" + message.getText();
+    }
+  }
+  lastAnswer = result;
   return result;
 
 }

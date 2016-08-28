@@ -156,7 +156,7 @@ function restart() {
         console.log("work");
     }
 }
-setInterval(restart, 1000);
+setInterval(restart, 2000);
 
 var ParseAnswer = function(cmd)
 {

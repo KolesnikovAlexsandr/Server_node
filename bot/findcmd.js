@@ -20,6 +20,14 @@ var randomSequence = [["выведи случайное число",1],["выв�
 var lenthSequence = [" от "," c "," до "]
 var lenths = ["длинной ","размером "];
 var optionReload = ["перезагрузка","перезагрузись","рестарт","рестартанись"]
+
+var lastAnswer = ["последнее сообщение","повтори","что","что ты сказала","еще раз"];
+
+var lastCmd = ["повтори команду","повтори последний запрос","еще раз команду","заново запрос","еще раз послднее действие","повторить запрос"];
+
+
+var lastMessage = "Это первое сообщение";
+
 var findIndex;
 var tabs;
 function Random(min, max){
@@ -35,7 +43,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd = "answer:"+answerSerch[Random(0,2)]+"***"+openGoogle(cmd,findIndex += item.length);
+            lastMessage = "answer:"+answerSerch[Random(0,3)];
+            findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
         }
     });
 
@@ -43,7 +52,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd = "answer:"+answerOk[Random(0,2)]+"***"+"openPage:google.com";
+            lastMessage = "answer:"+answerOk[Random(0,2)];
+            findcmd = lastMessage+"***"+"openPage:google.com";
         }
     });
 
@@ -53,7 +63,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerSerch[Random(0,2)]+"***"+openWiki(cmd,findIndex += item.length);
+            lastMessage = "answer:"+answerSerch[Random(0,3)];
+            findcmd =  lastMessage+"***"+openWiki(cmd,findIndex += item.length);
         }
     });
 
@@ -62,7 +73,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerOk[Random(0,2)]+"***"+"openPage:ru.wikipedia.org/";
+            lastMessage = "answer:"+answerOk[Random(0,2)];
+            findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
         }
     });
 
@@ -71,7 +83,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerSerch[Random(0,2)]+"***"+openGoogleMap(cmd,findIndex += item.length);;
+            lastMessage = "answer:"+answerSerch[Random(0,3)];
+            findcmd =  lastMessage+"***"+openGoogleMap(cmd,findIndex += item.length);;
         }
     });
 
@@ -80,7 +93,8 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
         {
-            findcmd =  "answer:"+answerOk[Random(0,2)]+"***"+"openPage:google.ru/maps";
+            lastMessage = "answer:"+answerOk[Random(0,2)];
+            findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
         }
     });
 
@@ -124,6 +138,15 @@ exports.getcmd = function(cmd)
                 findcmd+=Random(min,max)+" ";
             }
             findcmd+=Random(min,max);
+            lastMessage = findcmd;
+        }
+    });
+
+    lastAnswer.forEach(function (item) {
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            findcmd = lastMessage;
         }
     });
 
@@ -155,4 +178,13 @@ exports.findMath = function(cmd) {
         }
     });
     return cmd;
+}
+
+exports.useLastCmd = function (cmd) {
+    var flag = false;
+    lastCmd.forEach(function (item) {
+        if(cmd.indexOf(item) != -1)
+            flag = true;
+    });
+    return flag;
 }
