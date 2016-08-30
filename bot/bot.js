@@ -1,3 +1,5 @@
+var LenthConvert = require("./physicalQuantities.js").LenthConvert;
+
 var botLog;
 var botElementId = "bot";
 var botLogElementId = "botLog";
@@ -736,23 +738,10 @@ SpeechBot.prototype.getResponse = function(message) {
 						  || message.search("какой год") > -1 
 						  || message.search("год какой") > -1) { 
    chatBotMessage.setText("Сейчас " + (new Date()).getFullYear() + " год.");
- } else if(message.search("переведи") > -1 && message.search(" метр") > -1 && message.search(" в метр") == -1) {
-  var n = 1*message.slice(message.search("переведи")+9, message.search(" метр"));
-  if(message.search("сантиметр") > -1) {chatBotMessage.setText(n + " м = " + n*100 + " см.");}
-  else if(message.search("миллиметр") > -1) {chatBotMessage.setText(n + " м = " + n*1000 + " мм.");}
-  else if(message.search("микрометр") > -1) {chatBotMessage.setText(n + " м = " + n*1000000 + " мкм.");}
-  else if(message.search("микрон") > -1) {chatBotMessage.setText(n + " м = " + n*1000000 + " мкн.");}
-  else if(message.search("нанометр") > -1) {chatBotMessage.setText(n + " м = " + n*1000000000 + " нм.");}
-  else if(message.search("ангстрем") > -1) {chatBotMessage.setText(n + " м = " + n*10000000000 + " Å.");}
-  else if(message.search("километр") > -1) {chatBotMessage.setText(n + " м = " + n/1000 + " км.");}
-  else if(message.search("пункт") > -1) {chatBotMessage.setText(n + " м = " + n*1000/0.353 + " (пункт).");}
-  else if(message.search("дюйм") > -1) {chatBotMessage.setText(n + " м = " + n*1000/25.39 + " (дюйм).");}
-  else if(message.search("ярд") > -1) {chatBotMessage.setText(n + " м = " + n/0.9144 + " (ярд).");}
-  else if(message.search("мили") > -1) {chatBotMessage.setText(n + " м = " + n/100/1.6093 + " (миля).");}
-  else if(message.search("фут") > -1) {chatBotMessage.setText(n + " м = " + n*3.281 + " (фут).");}
-  else if(message.search("аршин") > -1) {chatBotMessage.setText(n + " м = " + n/2.13 + " (аршин).");}
-  else {chatBotMessage.setText("Этого я еще не умею делать. Научи!");};
- } else if(message.search("переведи") > -1 && message.search(" градус") > -1 && message.search(" в радиан") > -1) {
+ } else if(message.search("переведи") > -1 ) {
+   chatBotMessage.setText(LenthConvert(message));
+ }
+ else if(message.search("переведи") > -1 && message.search(" градус") > -1 && message.search(" в радиан") > -1) {
   var n = 1*message.slice(message.search("переведи")+9, message.search(" градус"));
   chatBotMessage.setText(n + " (градус) = " + n/57.2958 + " (радиан).");
  } else if(message.search("переведи") > -1 && message.search(" радиан") > -1 && message.search(" в градус") > -1) {

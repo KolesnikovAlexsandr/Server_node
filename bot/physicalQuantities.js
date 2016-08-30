@@ -1,26 +1,31 @@
 /**
  * Created by sasha on 23/08/16.
  */
-var optionLenth = {};
-optionLenth["сантиметр"] = 100;
-optionLenth["миллиметр"] = 1000;
-optionLenth["микрометр"] = 1000000;
-optionLenth["микрон"] = 1000000; 
-optionLenth["нанометр"] = 1000000000 ;
-optionLenth["ангстрем"] = 10000000000;
-optionLenth["километр"] = 1/1000;
-optionLenth["пункт"] = 1000/0.353;
-optionLenth["дюйм"] = 1000/25.39;
-optionLenth["ярд"] = 1/0.9144;
-optionLenth["мили"] = 1/100/1.6093;
-optionLenth["фут"] = 3.281;
-optionLenth["аршин"] = 1/2.13;
+var optionLenth = [["метр",1],["сантиметр",100],["миллиметр",1000],["микрометр",1000000],["микрон",1000000],["нанометр",1000000000],["ангстрем", 10000000000],["километр", 1/1000]
+    ,["пункт", 1000/0.353],["дюйм", 1000/25.39],["ярд", 1/0.9144],["мили",1/100/1.6093],["фут",3.281],["аршин", 1/2.13]];
+
 
 var BadData = ["Проверте входные данные","Входные данные неверные"];
-var LenthConvert = function( from , n , to)
+exports.LenthConvert = function( message)
 {
+    var from;
+    var to;
+    var n = Number(message.replace(/\D+/g,""));
+    optionLenth.forEach(function (item) {
+        if(message.indexOf("в " + item[0]) != -1)
+        {
+            to = item[1];
+        }
+        else if(message.indexOf(item[0]) != -1 && message.indexOf("в " + item[0] == -1))
+        {
+            console.log(item[0]);
+            from = item[1];
+        }
+    });
+
     try {
-        return n/optionLenth[from]*optionLenth[to];
+        console.log("from" + from + " to"+ to + " n" +n);
+        return n/from*to;
     }catch(e)
     {
      return BadData[Random(0,1)];
