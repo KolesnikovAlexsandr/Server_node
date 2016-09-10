@@ -6,7 +6,7 @@ var respond = '{"id":"*","answer":"*"}';
 var optionControlStop = ["закончить разговор","завершение работы","завершить работу","стоп запись","останавить запись","стоп","закончить"];
 var optionControlStart = ["начать работу","начать запись","эй пятница","пятница","работай","старт"];
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
-var answerBy = ["Завершение работы","Работа завершена","Конец Работы"];
+var answerBy = ["Завершение работы","Работа завершена","Конец Работы","заткнись","замолчи"];
 var optionAnswer = ["answer:","openPage:","restart", "test"];
 var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"]];
 
@@ -162,6 +162,7 @@ setInterval(restart, 2000);
 var ParseAnswer = function(cmd)
 {
     cmd = cmd.split("***");
+    console.log(cmd);
     cmd.forEach(function (item) {
         if(item.indexOf(optionAnswer[0]) != -1)
         {

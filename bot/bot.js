@@ -2546,13 +2546,17 @@ var JustBotAnswer = function(m , cmd)
   var botMan = new SpeechBot();
   var message = botMan.getResponse(cmd);
   result = "answer:" + message.getText();
+  return result;
  }
- return result;
+ else {
+  return m;
+ }
 }
 
 
 exports.getAnswer = function(cmd)
 {
+ var message;
   var result = ContinueComand(cmd);
   if(!result) {
    if ( useLastCmd( cmd ) ) {
