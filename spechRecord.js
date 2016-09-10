@@ -7,7 +7,8 @@ var optionControlStop = ["закончить разговор","завершен
 var optionControlStart = ["начать работу","начать запись","эй пятница","пятница","работай","старт"];
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
 var answerBy = ["Завершение работы","Работа завершена","Конец Работы"];
-var optionAnswer = ["answer:","openPage:","restart"];
+var optionAnswer = ["answer:","openPage:","restart", "test"];
+var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"]];
 
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -174,5 +175,33 @@ var ParseAnswer = function(cmd)
         {
             location.reload();
         }
+        if(item.indexOf(optionAnswer[3]) != -1)
+        {
+            TestBot();
+        }
     });
+}
+
+
+var TestBot = function()
+{
+    var GoodTest = true;
+    TestAnswerRequest.forEach(function (item , index) {
+        var request = new XMLHttpRequest();
+        request.open("POST", 'index', true);
+        request.send("user:" + item[0]);
+        request.onreadystatechange = function () {
+            if (request.readyState == 4) {
+                if(request.responseText.indexOf(item[1]) == -1)
+                {
+                    PrintMessage("bot","Не пройден тест номер " + index + " Получен ответ:" + request.responseText.substring(optionAnswer[0].length));
+                    GoodTest = false;
+                }
+
+            }
+        }
+    });
+    if(GoodTest) {
+        PrintMessage("bot", "Все тесты успешно пройдены");
+    }
 }

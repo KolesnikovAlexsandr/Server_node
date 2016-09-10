@@ -738,7 +738,7 @@ SpeechBot.prototype.getResponse = function(message) {
 						  || message.search("какой год") > -1 
 						  || message.search("год какой") > -1) { 
    chatBotMessage.setText("Сейчас " + (new Date()).getFullYear() + " год.");
- } else if(message.search("переведи") > -1 ) {
+ } else if(message.search("переведи") > -1 || message.search("перевести") > -1 ) {
    chatBotMessage.setText(LenthConvert(message));
  }
  else if(message.search("переведи") > -1 && message.search(" градус") > -1 && message.search(" в радиан") > -1) {

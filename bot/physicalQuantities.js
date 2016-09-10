@@ -31,7 +31,7 @@ exports.LenthConvert = function( message)
             return n / from[1] * to[1];
         }
         else{
-            return n / from[1] * to[1] + " " + addSuffixForNumber(n / from[1] * to[1]);
+            return n / from[1] * to[1] + " " +to[0]+ addSuffixForNumber(n / from[1] * to[1]);
         }
     }catch(e)
     {

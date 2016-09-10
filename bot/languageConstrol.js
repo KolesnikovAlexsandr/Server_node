@@ -6,5 +6,10 @@ var Suffix = ["ов","","a","a","ов","ов","ов","ов","ов"];
 
 exports.addSuffixForNumber =  function( varible )
 {
-    return Suffix[ varible % 10 ];
+    var buffer = Math.abs(varible);
+    while(buffer < 1)
+    {
+        buffer = buffer * 10;
+    }
+    return Suffix[ buffer % 10 ];
 }
