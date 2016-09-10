@@ -1,6 +1,7 @@
 /**
  * Created by sasha on 08/08/16.
  */
+var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
 
 var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionGoogleOpen = ["открой google","открой гугл"];
@@ -27,13 +28,39 @@ var lastAnswer = ["последнее сообщение","повтори","чт
 
 var lastCmd = ["повтори команду","повтори последний запрос","еще раз команду","заново запрос","еще раз послднее действие","повторить запрос"];
 
-
+var make = ["создай","сделай","зделай","запиши","новый файл","создать файл"];
+var fileNamequestion = ["Как назвать файл?","Назовите Файл","Имя файла"];
 var lastMessage = "Это первое сообщение";
+
+
+var flagOfComandContinue = [false,false];
+
 
 var findIndex;
 var tabs;
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+
+exports.ContinueComand = function (cmd) {
+    var result = false;
+    flagOfComandContinue.forEach(function (item ,index) {
+        if( item ) {
+            flagOfComandContinue[index] = false;
+            switch (index)
+            {
+                case 0:
+                    CreateTxtFileByName(cmd);
+                    result =  "answer:"+answerOk[Random(0,2)];
+                break;
+                
+                case 1:
+                break;
+            }
+        }
+    });
+    return result;
 }
 
 exports.getcmd = function(cmd)
@@ -159,7 +186,14 @@ exports.getcmd = function(cmd)
             findcmd = "test";
         }
     });
-
+    make.forEach(function (item) {
+        findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            flagOfComandContinue[0] = true;
+            findcmd =  "answer:"+fileNamequestion[Random(0,2)];
+        }
+    })
     return findcmd;
 }
 

@@ -1,4 +1,5 @@
 var LenthConvert = require("./physicalQuantities.js").LenthConvert;
+var ContinueComand = require("./findcmd.js").ContinueComand;
 
 var botLog;
 var botElementId = "bot";
@@ -2538,35 +2539,36 @@ var getcmd = require("./findcmd.js").getcmd;
 var useLastCmd = require("./findcmd.js").useLastCmd;
 var lastCmd = "";
 
+var JustBotAnswer = function(m , cmd)
+{
+ var result = cmd;
+ if ( !m ) {
+  var botMan = new SpeechBot();
+  var message = botMan.getResponse(cmd);
+  result = "answer:" + message.getText();
+ }
+ return result;
+}
+
+
 exports.getAnswer = function(cmd)
 {
-  if(useLastCmd(cmd))
-  {
-   cmd = lastCmd;
-   cmd = findMath(cmd);
-   var result = getcmd(cmd);
-   console.log(result);
-   if(!result)
-   {
-    var botMan = new SpeechBot();
-    var message = botMan.getResponse(cmd);
-    result = "answer:" + message.getText();
+  var result = ContinueComand(cmd);
+  if(!result) {
+   if ( useLastCmd( cmd ) ) {
+    cmd = lastCmd;
+    cmd = findMath( cmd );
+    result = getcmd( cmd );
    }
-  }
-  else {
+   else {
     lastCmd = cmd;
     cmd = findMath(cmd);
-    var result = getcmd(cmd);
-    console.log(result);
-    if (!result) {
-     var botMan = new SpeechBot();
-     var message = botMan.getResponse(cmd);
-     result = "answer:" + message.getText();
-    }
+    result = getcmd(cmd);
+   }
+   result = JustBotAnswer(result , cmd);
   }
   lastAnswer = result;
   return result;
-
 }
 
  
