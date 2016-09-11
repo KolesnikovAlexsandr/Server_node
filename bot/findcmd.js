@@ -2,6 +2,7 @@
  * Created by sasha on 08/08/16.
  */
 var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
+var WriteTxtFile = require("./WorkWithFile.js").WriteTxtFile;
 
 var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionGoogleOpen = ["открой google","открой гугл"];
@@ -27,13 +28,15 @@ var optionReload = ["перезагрузка","перезагрузись","р�
 var lastAnswer = ["последнее сообщение","повтори","что ты сказала","еще раз"];
 
 var lastCmd = ["повтори команду","повтори последний запрос","еще раз команду","заново запрос","еще раз послднее действие","повторить запрос"];
-
+var byText = ["с текстом","c таким текстом","текстом"]
 var make = ["создай","сделай","зделай","запиши","новый файл","создать файл"];
 var fileNamequestion = ["Как назвать файл?","Назовите Файл","Имя файла"];
+var WriteFileQuestion = ["Записать файл?"];
 var lastMessage = "Это первое сообщение";
 
+var ListOfFileTxt =[];
 
-var flagOfComandContinue = [false,false];
+var flagOfComandContinue = [false,false,false,false];
 
 
 var findIndex;
@@ -45,21 +48,53 @@ function Random(min, max){
 
 exports.ContinueComand = function (cmd) {
     var result = false;
+    var writeLastFile = false;
     flagOfComandContinue.forEach(function (item ,index) {
         if( item ) {
             flagOfComandContinue[index] = false;
             switch (index)
             {
                 case 0:
-                    CreateTxtFileByName(cmd);
-                    result =  "answer:"+answerOk[Random(0,2)];
+                    ListOfFileTxt[ListOfFileTxt.length] = cmd;
+                    result = CreateTxtFileByName(cmd);
                 break;
-                
                 case 1:
+                    console.log(cmd + " !!");
+                    if(cmd.indexOf("да ") !=  -1)
+                    {
+                        writeLastFile = true;
+                        byText.forEach(function (item) {
+                            console.log(item +"  " +cmd.indexOf(item) );
+                            if(cmd.indexOf(item) != -1 && !result)
+                            {
+                                console.log( ListOfFileTxt[ListOfFileTxt.length] + "  " + cmd.substring(cmd.indexOf(item))+item.length);
+                                writeLastFile = false;
+                                WriteTxtFile(ListOfFileTxt[ListOfFileTxt.length-1],cmd.substring(cmd.indexOf(item )+item.length));
+                                result = "answer:"+answerOk[Random(0,2)];
+                            }
+                        });
+                    }
+                    else {
+                        result = "answer:"+answerOk[Random(0,2)];
+                    }
+                break;
+                case 2:
+
+                break;
+                case 3:
+
                 break;
             }
         }
     });
+    if(result == "answer:Записать файл?")
+    {
+        flagOfComandContinue[1] = true;
+    }
+    if(writeLastFile)
+    {
+        flagOfComandContinue[2] = true;
+    }
     return result;
 }
 
