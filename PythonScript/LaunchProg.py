@@ -2,9 +2,10 @@ import os
 import sys
 
 def main():
+    print(sys.argv)
     total = len(sys.argv)
     cmdargs = str(sys.argv[1])
-    return OpenProg(cmdargs)
+    print(OpenProg(cmdargs))
 
 def OpenProg(value):
     if(value == "itunes"):
@@ -12,7 +13,7 @@ def OpenProg(value):
     elif(value == "xcode"):
         os.system('open /Applications/Xcode.app')
     elif(value == "twitter"):
-        os.system('open /Applications/Twitter.app')
+        os.system('open /Applications/Tweetbot.app')
     elif(value == "skype"):
         os.system('open /Applications/Skype.app')
     else:

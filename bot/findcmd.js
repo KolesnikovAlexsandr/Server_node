@@ -32,6 +32,8 @@ var byText = ["с текстом","c таким текстом","текстом"
 var make = ["создай","сделай","зделай","запиши","новый файл","создать файл"];
 var fileNamequestion = ["Как назвать файл?","Назовите Файл","Имя файла"];
 
+var OpenOptins =["открой ","запусти "];
+
 var lastMessage = "Это первое сообщение";
 
 var ListOfFileTxt =[];
@@ -39,6 +41,7 @@ var ListOfFileTxt =[];
 var flagOfComandContinue = [false,false,false,false];
 
 var mysql = require('mysql');
+var PythonShell = require('python-shell');
 
 //var DataBaseConnect = mysql.createClient();
 
@@ -233,6 +236,21 @@ exports.getcmd = function(cmd)
         {
             flagOfComandContinue[0] = true;
             findcmd =  "answer:"+fileNamequestion[Random(0,2)];
+        }
+    });
+
+    OpenOptins.forEach(function (item) {
+       findIndex = cmd.indexOf(item);
+        if(findIndex != -1)
+        {
+            var options = {
+                args: [cmd.substring(findIndex + item.length)]
+            };
+            PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {
+                if (err) throw err;
+                // results is an array consisting of messages collected during execution
+                console.log('result!!!s: %j', results);
+            });
         }
     });
     console.log(findcmd);
