@@ -8,7 +8,9 @@ var optionControlStart = ["начать работу","начать запись
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
 var answerBy = ["Завершение работы","Работа завершена","Конец Работы","заткнись","замолчи"];
 var optionAnswer = ["answer:","openPage:","restart", "test"];
-var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"]];
+var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"],["cоздать файл","файл"],["123","Записать файл?"],["да",""]];
+
+
 
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -17,7 +19,8 @@ function Random(min, max){
 var recognizer = new webkitSpeechRecognition();
 var msg = new SpeechSynthesisUtterance();
 var voices = window.speechSynthesis.getVoices();
-var messegeField ;document.getElementById("monitor");
+var messegeField ;
+document.getElementById("monitor");
 var BotMessageId = 0;
 var UserMessageId = 0;
 var callProgram = true;
@@ -26,6 +29,7 @@ var transcription = 0;
 var hiSpeeck = false;
 
 function start() {
+
     recognizer.start();
 }
 function setWork(bool) {
@@ -193,6 +197,7 @@ var TestBot = function()
         request.send("user:" + item[0]);
         request.onreadystatechange = function () {
             if (request.readyState == 4) {
+                console.log("send:" + item + " " + "answer:"+request.responseText);
                 if(request.responseText.indexOf(item[1]) == -1)
                 {
                     PrintMessage("bot","Не пройден тест номер " + index + " Получен ответ:" + request.responseText.substring(optionAnswer[0].length));
@@ -201,8 +206,8 @@ var TestBot = function()
 
             }
         }
+        if(GoodTest && index == TestAnswerRequest.length-1) {
+            PrintMessage("bot", "Тесты завершены");
+        }
     });
-    if(GoodTest) {
-        PrintMessage("bot", "Все тесты успешно пройдены");
-    }
 }
