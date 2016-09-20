@@ -1,6 +1,8 @@
 /**
  * Created by sasha on 08/08/16.
  */
+
+
 var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
 var WriteTxtFile = require("./WorkWithFile.js").WriteTxtFile;
 
@@ -32,7 +34,9 @@ var byText = ["с текстом","c таким текстом","текстом"
 var make = ["создай","сделай","зделай","запиши","новый файл","создать файл"];
 var fileNamequestion = ["Как назвать файл?","Назовите Файл","Имя файла"];
 
-var OpenOptins =["открой ","запусти "];
+var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
+
+var OpenProgOptins =["открой ","запусти "];
 
 var lastMessage = "Это первое сообщение";
 
@@ -110,119 +114,128 @@ exports.ContinueComand = function (cmd) {
 exports.getcmd = function(cmd)
 {
     cmd = cmd.toLowerCase();
+    var comandCaunter = ResultMass.length;
     var findcmd = false;
 
     optionGoogleSerch.forEach(function (item) {
         findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerSerch[Random(0,3)];
-            findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
-        }
-    });
-
-    optionGoogleOpen.forEach(function (item) {
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerOk[Random(0,2)];
-            findcmd = lastMessage+"***"+"openPage:google.com";
-        }
-    });
-
-
-    optionWikiSerch.forEach(function (item) {
-
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerSerch[Random(0,3)];
-            findcmd =  lastMessage+"***"+openWiki(cmd,findIndex += item.length);
-        }
-    });
-
-    optionWikiOpen.forEach(function (item) {
-
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerOk[Random(0,2)];
-            findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
-        }
-    });
-
-    optionGoogleMapSerch.forEach(function (item) {
-
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerSerch[Random(0,3)];
-            findcmd =  lastMessage+"***"+openGoogleMap(cmd,findIndex += item.length);
-        }
-    });
-
-    optionGoogleMapOpen.forEach(function (item) {
-
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            lastMessage = "answer:"+answerOk[Random(0,2)];
-            findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
-        }
-    });
-
-    optionReload.forEach(function (item) {
-
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            findcmd = "restart";
-        }
-    });
-
-    randomSequence.forEach(function (item) {
-        findIndex = cmd.indexOf(item[0])
-        if(findIndex != -1)
-        {
-            var lenthRandom = item[1];
-            var min = 0;
-            var max = 1;
-            var stringforRandom = cmd.substring(findIndex += item[0].length+1);
-            stringforRandom = stringforRandom.split(" ");
-            for(var i = 0 ; i < stringforRandom.length ; i++)
+            if(findIndex != -1)
             {
-                if(stringforRandom[i] == "от" || stringforRandom[i] == "c")
-                {
-                    min = Math.floor(stringforRandom[i+1]);
-                }
-                if(stringforRandom[i] == "до")
-                {
-                    max = Math.floor(stringforRandom[i+1]);
-                }
-                if(stringforRandom[i] == "длиной" || stringforRandom[i] == "размером")
-                {
-                    lenthRandom = Math.floor(stringforRandom[i+1]);
-                }
+                lastMessage = "answer:"+answerSerch[Random(0,3)];
+                findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
             }
-            console.log("min:" + min + " max:" + max + " lenth:" + lenthRandom) ;
-            findcmd = "answer:"
-            for(var i = 0 ; i < lenthRandom-1 ; i++)
-            {
-                findcmd+=Random(min,max)+" ";
-            }
-            findcmd+=Random(min,max);
-            lastMessage = findcmd;
-        }
     });
 
-    lastAnswer.forEach(function (item) {
-        findIndex = cmd.indexOf(item);
-        if(findIndex != -1)
-        {
-            findcmd = lastMessage;
-        }
-    });
-    
+
+        optionGoogleOpen.forEach(function (item) {
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                lastMessage = "answer:"+answerOk[Random(0,2)];
+                findcmd = lastMessage+"***"+"openPage:google.com";
+            }
+        });
+
+
+        optionWikiSerch.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                lastMessage = "answer:"+answerSerch[Random(0,3)];
+                findcmd =  lastMessage+"***"+openWiki(cmd,findIndex += item.length);
+            }
+        });
+
+
+        optionWikiOpen.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                lastMessage = "answer:"+answerOk[Random(0,2)];
+                findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
+            }
+        });
+
+
+
+        optionGoogleMapSerch.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                lastMessage = "answer:"+answerSerch[Random(0,3)];
+                findcmd =  lastMessage+"***"+openGoogleMap(cmd,findIndex += item.length);
+            }
+        });
+
+        optionGoogleMapOpen.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                lastMessage = "answer:"+answerOk[Random(0,2)];
+                findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
+            }
+        });
+
+        optionReload.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                findcmd = "restart";
+            }
+        });
+
+
+        randomSequence.forEach(function (item) {
+            findIndex = cmd.indexOf(item[0])
+            if(findIndex != -1)
+            {
+                var lenthRandom = item[1];
+                var min = 0;
+                var max = 1;
+                var stringforRandom = cmd.substring(findIndex += item[0].length+1);
+                stringforRandom = stringforRandom.split(" ");
+                for(var i = 0 ; i < stringforRandom.length ; i++)
+                {
+                    if(stringforRandom[i] == "от" || stringforRandom[i] == "c")
+                    {
+                        min = Math.floor(stringforRandom[i+1]);
+                    }
+                    if(stringforRandom[i] == "до")
+                    {
+                        max = Math.floor(stringforRandom[i+1]);
+                    }
+                    if(stringforRandom[i] == "длиной" || stringforRandom[i] == "размером")
+                    {
+                        lenthRandom = Math.floor(stringforRandom[i+1]);
+                    }
+                }
+                var buf;
+                console.log("min:" + min + " max:" + max + " lenth:" + lenthRandom) ;
+                buf = "answer:"
+                for(var i = 0 ; i < lenthRandom-1 ; i++)
+                {
+                    buf+=Random(min,max)+" ";
+                }
+                buf+=Random(min,max);
+                findcmd = buf;
+                lastMessage = buf;
+            }
+        });
+
+
+        lastAnswer.forEach(function (item) {
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                findcmd = lastMessage;
+            }
+        });
+
     TestBot.forEach(function (item) {
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
@@ -230,6 +243,8 @@ exports.getcmd = function(cmd)
             findcmd = "test";
         }
     });
+
+
     make.forEach(function (item) {
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
@@ -239,21 +254,51 @@ exports.getcmd = function(cmd)
         }
     });
 
-    OpenOptins.forEach(function (item) {
-       findIndex = cmd.indexOf(item);
+
+    OpenProgOptins.forEach(function (item) {
+        var flagOpen = false;
+        var options = {
+            args: [""]
+        };
+
+        findIndex = cmd.indexOf(item);
+
         if(findIndex != -1)
         {
-            var options = {
-                args: [cmd.substring(findIndex + item.length)]
-            };
-            PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {
-                if (err) throw err;
-                // results is an array consisting of messages collected during execution
-                console.log('result!!!s: %j', results);
-            });
+            if(cmd.indexOf("skype") != -1 || cmd.indexOf("скайп") != -1)
+            {
+                options.args = "skype";
+                flagOpen = true;
+            }
+            else if(cmd.indexOf("twitter") != -1 || cmd.indexOf("твитер") != -1 || cmd.indexOf("твиттер") != -1)
+            {
+                options.args = "twitter";
+                flagOpen = true;
+            }
+            else if(cmd.indexOf("xcode") != -1 )
+            {
+                options.args = "xcode";
+                flagOpen = true;
+            }
+            else if(cmd.indexOf("айтюнс") != -1 || cmd.indexOf("itunes") != -1 || cmd.indexOf("музык") != -1 )
+            {
+                options.args = "itunes";
+                flagOpen = true;
+            }
+            console.log(options.args);
+            if( flagOpen )
+            {
+                flagOpen = false
+
+                findcmd = "answer:" + answerOk[Random(0, 2)];
+
+                PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {if (err) throw err;});
+
+            }
+
         }
+
     });
-    console.log(findcmd);
     return findcmd;
 }
 

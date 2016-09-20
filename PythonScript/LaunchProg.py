@@ -6,6 +6,7 @@ def main():
     total = len(sys.argv)
     cmdargs = str(sys.argv[1])
     print(OpenProg(cmdargs))
+    return 0;
 
 def OpenProg(value):
     if(value == "itunes"):
