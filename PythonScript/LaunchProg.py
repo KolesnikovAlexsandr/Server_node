@@ -2,11 +2,10 @@ import os
 import sys
 
 def main():
-    print(sys.argv)
     total = len(sys.argv)
     cmdargs = str(sys.argv[1])
-    print(OpenProg(cmdargs))
-    return 0;
+    OpenProg(cmdargs)
+
 
 def OpenProg(value):
     if(value == "itunes"):
@@ -17,9 +16,14 @@ def OpenProg(value):
         os.system('open /Applications/Tweetbot.app')
     elif(value == "skype"):
         os.system('open /Applications/Skype.app')
-    else:
-        return False
-    return True
+    elif(value == "terminal"):
+        os.system('open /Applications/iTerm.app')
+    elif(value == "safari"):
+        os.system('open /Applications/safari.app')
+    elif(value == "preferences"):
+        os.system('open /Applications/System\ Preferences.app')
+    elif(value == "calendar"):
+        os.system('open /Applications/Calendar.app')
 
 
 

@@ -36,6 +36,7 @@ var fileNamequestion = ["Как назвать файл?","Назовите Фа
 
 var VolumeControlOption =[["выключи звук","off"],["off звук","off"],["убери звук","off"],["включи звук","on"],["сделай громче","more"],["оффни звук","more"],["погромче","more"],["больше звука","more"],["громче","more"],["тише","less"],["слишком громко","less"],["выключить звук","off"]];
 
+var ProgOpen = [["skype","skype"],["скайп","skype"],["itunes","itunes"],["музык","itunes"],["айтюнс","itunes"],["xcode","xcode"],["twitter","twitter"],["твитер","twitter"],["твиттер","twitter"],["терминал","terminal"],["terminal","terminal"],["календарь","celendar"],["найстройки компьютера","prefernces"],["браузер","safari"],["сафари","safari"],["safari","safari"]];
 var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
 
 var OpenProgOptins =["открой ","запусти "];
@@ -259,48 +260,20 @@ exports.getcmd = function(cmd)
     });
 
     if(!findcmd)
-    OpenProgOptins.forEach(function (item) {
-        var flagOpen = false;
-        var options = {
-            args: [""]
-        };
-
-        findIndex = cmd.indexOf(item);
-
-        if(findIndex != -1)
-        {
-            if(cmd.indexOf("skype") != -1 || cmd.indexOf("скайп") != -1)
+        if(cmd.indexOf(OpenProgOptins[0]) != -1 || cmd.indexOf(OpenProgOptins[1]) != -1)
+            ProgOpen.forEach(function (item) {
+            var options = {
+                args: [""]
+            };
+            findIndex = cmd.indexOf(item[0]);
+            if( findIndex != -1)
             {
-                options.args = "skype";
-                flagOpen = true;
-            }
-            else if(cmd.indexOf("twitter") != -1 || cmd.indexOf("твитер") != -1 || cmd.indexOf("твиттер") != -1)
-            {
-                options.args = "twitter";
-                flagOpen = true;
-            }
-            else if(cmd.indexOf("xcode") != -1 )
-            {
-                options.args = "xcode";
-                flagOpen = true;
-            }
-            else if(cmd.indexOf("айтюнс") != -1 || cmd.indexOf("itunes") != -1 || cmd.indexOf("музык") != -1 )
-            {
-                options.args = "itunes";
-                flagOpen = true;
-            }
-            console.log(options.args);
-            if( flagOpen )
-            {
-                flagOpen = false
-
-                findcmd = "answer:" + answerOk[Random(0, 2)];
-
+                options.args = item[1];
                 PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {if (err) throw err;});
-
+                findcmd = "answer:" + answerOk[Random(0, 2)];
             }
 
-        }
+
 
     });
 
