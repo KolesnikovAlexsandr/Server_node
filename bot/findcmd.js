@@ -31,8 +31,10 @@ var lastAnswer = ["последнее сообщение","повтори","чт
 
 var lastCmd = ["повтори команду","повтори последний запрос","еще раз команду","заново запрос","еще раз послднее действие","повторить запрос"];
 var byText = ["с текстом","c таким текстом","текстом"]
-var make = ["создай","сделай","зделай","запиши","новый файл","создать файл"];
+var make = ["создай файл","запиши","новый файл","создать файл"];
 var fileNamequestion = ["Как назвать файл?","Назовите Файл","Имя файла"];
+
+var VolumeControlOption =[["выключи звук","off"],["off звук","off"],["убери звук","off"],["включи звук","on"],["сделай громче","more"],["оффни звук","more"],["погромче","more"],["больше звука","more"],["громче","more"],["тише","less"],["слишком громко","less"],["выключить звук","off"]];
 
 var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
 
@@ -116,10 +118,9 @@ exports.getcmd = function(cmd)
     cmd = cmd.toLowerCase();
     var comandCaunter = ResultMass.length;
     var findcmd = false;
-
     optionGoogleSerch.forEach(function (item) {
         findIndex = cmd.indexOf(item);
-            if(findIndex != -1)
+            if(findIndex != -1 && !findcmd)
             {
                 lastMessage = "answer:"+answerSerch[Random(0,3)];
                 findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
@@ -127,16 +128,17 @@ exports.getcmd = function(cmd)
     });
 
 
+        if(!findcmd)
         optionGoogleOpen.forEach(function (item) {
             findIndex = cmd.indexOf(item);
-            if(findIndex != -1)
+            if(findIndex != -1 )
             {
                 lastMessage = "answer:"+answerOk[Random(0,2)];
                 findcmd = lastMessage+"***"+"openPage:google.com";
             }
         });
 
-
+        if(!findcmd)
         optionWikiSerch.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
@@ -147,7 +149,7 @@ exports.getcmd = function(cmd)
             }
         });
 
-
+    if(!findcmd)
         optionWikiOpen.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
@@ -159,7 +161,7 @@ exports.getcmd = function(cmd)
         });
 
 
-
+    if(!findcmd)
         optionGoogleMapSerch.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
@@ -170,6 +172,7 @@ exports.getcmd = function(cmd)
             }
         });
 
+    if(!findcmd)
         optionGoogleMapOpen.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
@@ -179,7 +182,7 @@ exports.getcmd = function(cmd)
                 findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
             }
         });
-
+    if(!findcmd)
         optionReload.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
@@ -189,7 +192,7 @@ exports.getcmd = function(cmd)
             }
         });
 
-
+    if(!findcmd)
         randomSequence.forEach(function (item) {
             findIndex = cmd.indexOf(item[0])
             if(findIndex != -1)
@@ -227,7 +230,7 @@ exports.getcmd = function(cmd)
             }
         });
 
-
+    if(!findcmd)
         lastAnswer.forEach(function (item) {
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
@@ -236,6 +239,7 @@ exports.getcmd = function(cmd)
             }
         });
 
+    if(!findcmd)
     TestBot.forEach(function (item) {
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
@@ -244,7 +248,7 @@ exports.getcmd = function(cmd)
         }
     });
 
-
+    if(!findcmd)
     make.forEach(function (item) {
         findIndex = cmd.indexOf(item);
         if(findIndex != -1)
@@ -254,7 +258,7 @@ exports.getcmd = function(cmd)
         }
     });
 
-
+    if(!findcmd)
     OpenProgOptins.forEach(function (item) {
         var flagOpen = false;
         var options = {
@@ -298,6 +302,20 @@ exports.getcmd = function(cmd)
 
         }
 
+    });
+
+    if(!findcmd)
+    VolumeControlOption.forEach(function (item) {
+        var options = {
+            args: [""]
+        };
+        findIndex = cmd.indexOf(item[0]);
+        if( findIndex != -1)
+        {
+            options.args = item[1];
+            PythonShell.run('PythonScript/VolumeControl.py', options, function (err, results) {if (err) throw err;});
+            findcmd = "answer:" + answerOk[Random(0, 2)];
+        }
     });
     return findcmd;
 }

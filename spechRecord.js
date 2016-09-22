@@ -79,7 +79,7 @@ function speech(text) {
     // Create a new instance of SpeechSynthesisUtterance.
 
     var voices = window.speechSynthesis.getVoices();
-    msg.voice = voices[38]; // Note: some voices don't support altering params
+    msg.voice = voices[27]; // Note: some voices don't support altering params
     msg.voiceURI = 'native';
     msg.volume = 1; // 0 to 1
     msg.rate = 1; // 0.1 to 10
