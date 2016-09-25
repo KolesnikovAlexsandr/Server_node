@@ -37,7 +37,7 @@ var fileNamequestion = ["Как назвать файл?","Назовите Фа
 
 var VolumeControlOption =[["выключи звук","off"],["off звук","off"],["убери звук","off"],["включи звук","on"],["сделай громче","more"],["оффни звук","more"],["погромче","more"],["больше звука","more"],["громче","more"],["тише","less"],["слишком громко","less"],["выключить звук","off"]];
 
-var ProgOpen = [["skype","skype"],["скайп","skype"],["itunes","itunes"],["музык","itunes"],["айтюнс","itunes"],["xcode","xcode"],["twitter","twitter"],["твитер","twitter"],["твиттер","twitter"],["терминал","terminal"],["terminal","terminal"],["календарь","celendar"],["найстройки компьютера","prefernces"],["браузер","safari"],["сафари","safari"],["safari","safari"]];
+var AppOption = [["skype","skype"],["скайп","skype"],["itunes","itunes"],["музык","itunes"],["айтюнс","itunes"],["xcode","xcode"],["twitter","twitter"],["твитер","twitter"],["твиттер","twitter"],["терминал","terminal"],["terminal","terminal"],["календарь","celendar"],["найстройки компьютера","prefernces"],["браузер","safari"],["сафари","safari"],["safari","safari"]];
 var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
 
 var OpenProgOptins =["открой ","запусти "];
@@ -189,7 +189,7 @@ exports.getcmd = function(cmd)
         optionReload.forEach(function (item) {
 
             findIndex = cmd.indexOf(item);
-            if(findIndex != -1)
+            if(findIndex != -1 && cmd.length == item.length)
             {
                 findcmd = "restart";
             }
@@ -263,7 +263,7 @@ exports.getcmd = function(cmd)
 
     if(!findcmd)
         if(cmd.indexOf(OpenProgOptins[0]) != -1 || cmd.indexOf(OpenProgOptins[1]) != -1)
-            ProgOpen.forEach(function (item) {
+            AppOption.forEach(function (item) {
             findIndex = cmd.indexOf(item[0]);
             if( findIndex != -1)
             {
@@ -271,14 +271,14 @@ exports.getcmd = function(cmd)
                     args: [""]
                 };
                 options.args = item[1];
-                PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {if (err) throw err;});
+                PythonShell.run('PythonScript/LaunchApp.py', options, function (err, results) {if (err) throw err;});
                 findcmd = "answer:" + answerOk[Random(0, 3)];
             }
         });
 
     if(!findcmd)
         if(cmd.indexOf(CloseProgOptins[0]) != -1 || cmd.indexOf(CloseProgOptins[1]) != -1 || cmd.indexOf(CloseProgOptins[2]) != -1)
-            ProgOpen.forEach(function (item) {
+            AppOption.forEach(function (item) {
                 findIndex = cmd.indexOf(item[0]);
                 if( findIndex != -1)
                 {
@@ -286,7 +286,7 @@ exports.getcmd = function(cmd)
                         args: [""]
                     };
                     options.args = item[1];
-                    PythonShell.run('PythonScript/CloseProg.py', options, function (err, results) {if (err) throw err;});
+                    PythonShell.run('PythonScript/CloseApp.py', options, function (err, results) {if (err) throw err;});
                     findcmd = "answer:" + answerOk[Random(0, 3)];
                 }
             });
@@ -304,6 +304,22 @@ exports.getcmd = function(cmd)
             findcmd = "answer:" + answerOk[Random(0, 3)];
         }
     });
+
+
+    if(!findcmd)
+        if(cmd.indexOf("перезапусти") != -1 || cmd.indexOf("перезагрузи") != -1 )
+            AppOption.forEach(function (item) {
+                findIndex = cmd.indexOf(item[0]);
+                if( findIndex != -1)
+                {
+                    var options = {
+                        args: [""]
+                    };
+                    options.args = item[1];
+                    PythonShell.run('PythonScript/RestartApp.py', options, function (err, results) {if (err) throw err;});
+                    findcmd = "answer:" + answerOk[Random(0, 3)];
+                }
+            });
     return findcmd;
 }
 
