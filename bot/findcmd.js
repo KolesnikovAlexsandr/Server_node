@@ -5,6 +5,7 @@
 
 var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
 var WriteTxtFile = require("./WorkWithFile.js").WriteTxtFile;
+//var child_process = require('child_process');
 
 var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
 var optionGoogleOpen = ["открой google","открой гугл"];
@@ -17,7 +18,7 @@ var optionGoogleMapOpen = ["открой карты","открой карты go
 
 var optionMath =[ ["минус","-"],["и минус","-"],["отнять","-"],["и отнять" , "-"],["плюс","+"],["и плюс","+"],["и прибавить","+"],["прибавить","+"],["умножить на" , "*"],["и умножить на" , "*"],["разделить на","/"],["и разделить на","/"]];
 
-var answerOk = ["Хорошо","Сделано","Окей"];
+var answerOk = ["Хорошо","Сделано","Окей","Выполнено"];
 var answerSerch = ["Вот что я нашла","Поиск выполнен","Вот ответ на ваш запрос"];
 
 var randomSequence = [["выведи случайное число",1],["вывести случайное число",1],["вывести случайное число",1],["сгенерируй случайное число",1],["генерируй случайное число",1],["выведи случайную последовательность",-1],["вывести случайную последовательность",-1],["сгенерируй случайную последовательность",-1],["генерируй случайную последоватьльность",-1]];
@@ -40,6 +41,7 @@ var ProgOpen = [["skype","skype"],["скайп","skype"],["itunes","itunes"],["�
 var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
 
 var OpenProgOptins =["открой ","запусти "];
+var CloseProgOptins =["закрой","заверши","убей процесс"];
 
 var lastMessage = "Это первое сообщение";
 
@@ -88,7 +90,7 @@ exports.ContinueComand = function (cmd) {
                         });
                     }
                     else if(cmd.indexOf("нет") !=  -1){
-                        result = "answer:"+answerOk[Random(0,2)];
+                        result = "answer:"+answerOk[Random(0,3)];
                     }
                     else {
                         result = "answer:Записать файл?"
@@ -134,7 +136,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1 )
             {
-                lastMessage = "answer:"+answerOk[Random(0,2)];
+                lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd = lastMessage+"***"+"openPage:google.com";
             }
         });
@@ -156,7 +158,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                lastMessage = "answer:"+answerOk[Random(0,2)];
+                lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
             }
         });
@@ -179,7 +181,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                lastMessage = "answer:"+answerOk[Random(0,2)];
+                lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
             }
         });
@@ -262,32 +264,44 @@ exports.getcmd = function(cmd)
     if(!findcmd)
         if(cmd.indexOf(OpenProgOptins[0]) != -1 || cmd.indexOf(OpenProgOptins[1]) != -1)
             ProgOpen.forEach(function (item) {
-            var options = {
-                args: [""]
-            };
             findIndex = cmd.indexOf(item[0]);
             if( findIndex != -1)
             {
+                var options = {
+                    args: [""]
+                };
                 options.args = item[1];
                 PythonShell.run('PythonScript/LaunchProg.py', options, function (err, results) {if (err) throw err;});
-                findcmd = "answer:" + answerOk[Random(0, 2)];
+                findcmd = "answer:" + answerOk[Random(0, 3)];
             }
+        });
 
-
-
-    });
+    if(!findcmd)
+        if(cmd.indexOf(CloseProgOptins[0]) != -1 || cmd.indexOf(CloseProgOptins[1]) != -1 || cmd.indexOf(CloseProgOptins[2]) != -1)
+            ProgOpen.forEach(function (item) {
+                findIndex = cmd.indexOf(item[0]);
+                if( findIndex != -1)
+                {
+                    var options = {
+                        args: [""]
+                    };
+                    options.args = item[1];
+                    PythonShell.run('PythonScript/CloseProg.py', options, function (err, results) {if (err) throw err;});
+                    findcmd = "answer:" + answerOk[Random(0, 3)];
+                }
+            });
 
     if(!findcmd)
     VolumeControlOption.forEach(function (item) {
-        var options = {
-            args: [""]
-        };
         findIndex = cmd.indexOf(item[0]);
         if( findIndex != -1)
         {
+            var options = {
+                args: [""]
+            };
             options.args = item[1];
             PythonShell.run('PythonScript/VolumeControl.py', options, function (err, results) {if (err) throw err;});
-            findcmd = "answer:" + answerOk[Random(0, 2)];
+            findcmd = "answer:" + answerOk[Random(0, 3)];
         }
     });
     return findcmd;

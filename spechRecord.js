@@ -17,6 +17,8 @@ function Random(min, max){
 }
 
 var recognizer = new webkitSpeechRecognition();
+recognizer.continuous = true;
+recognizer.interimResults = true;
 var msg = new SpeechSynthesisUtterance();
 var voices = window.speechSynthesis.getVoices();
 var messegeField ;
@@ -27,7 +29,7 @@ var callProgram = true;
 var work = false;
 var transcription = 0;
 var hiSpeeck = false;
-
+var last;
 function start() {
 
     recognizer.start();
@@ -92,6 +94,7 @@ function speech(text) {
 // Используем колбек для обработки результатов
 recognizer.onresult = function (event) {
     var result = event.results[event.resultIndex];
+    console.log(result.isFinal);
     if (result.isFinal) {
         document.getElementById("userConsoleText").value ="";
         var cmd = result[0].transcript.toLowerCase();
@@ -112,11 +115,14 @@ recognizer.onresult = function (event) {
         }
 
         StartWork(cmd);
-        
+
     } else {
+        if(last == result[0].transcript) result.isFinal = true;
+        last = result[0].transcript;
         console.log('Промежуточный результат: ', result[0].transcript);
         document.getElementById("userConsoleText").value = result[0].transcript;
-        document.getElementById("userConsoleText").setAttribute('style',"color:#DCDCDC;")
+        document.getElementById("userConsoleText").setAttribute('style',"color:#DCDCDC;");
+        console.log("1");
     }
 };
 

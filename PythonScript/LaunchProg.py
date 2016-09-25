@@ -4,7 +4,7 @@ import sys
 def main():
     total = len(sys.argv)
     cmdargs = str(sys.argv[1])
-    OpenProg(cmdargs)
+    print(OpenProg(cmdargs))
 
 
 def OpenProg(value):
@@ -24,7 +24,9 @@ def OpenProg(value):
         os.system('open /Applications/System\ Preferences.app')
     elif(value == "calendar"):
         os.system('open /Applications/Calendar.app')
-
+    else:
+        return False
+    return True
 
 
 main()
