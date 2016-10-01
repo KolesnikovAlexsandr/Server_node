@@ -17,7 +17,7 @@ function Random(min, max){
 }
 
 var recognizer = new webkitSpeechRecognition();
-recognizer.continuous = true;
+recognizer.continuous = false;
 recognizer.interimResults = true;
 var msg = new SpeechSynthesisUtterance();
 var voices = window.speechSynthesis.getVoices();
@@ -101,28 +101,15 @@ recognizer.onresult = function (event) {
         StopWork(cmd);
 
         if(work) {
-                UserMessageId++;
-                PrintMessage("user", cmd);
-                var request = new XMLHttpRequest();
-                request.open("POST", 'index', true);
-                request.send("user:" + cmd);
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4) {
-                        BotMessageId++;
-                        ParseAnswer(request.responseText);
-                    }
-                }
+            SendPrintToServer(cmd);
         }
 
         StartWork(cmd);
 
     } else {
-        if(last == result[0].transcript) result.isFinal = true;
-        last = result[0].transcript;
         console.log('Промежуточный результат: ', result[0].transcript);
         document.getElementById("userConsoleText").value = result[0].transcript;
         document.getElementById("userConsoleText").setAttribute('style',"color:#DCDCDC;");
-        console.log("1");
     }
 };
 
@@ -167,7 +154,7 @@ function restart() {
         console.log("work");
     }
 }
-setInterval(restart, 2000);
+setInterval(restart, 1000);
 
 var ParseAnswer = function(cmd)
 {
@@ -216,4 +203,19 @@ var TestBot = function()
             PrintMessage("bot", "Тесты завершены");
         }
     });
+}
+
+
+var SendPrintToServer = function (text) {
+    UserMessageId++;
+    PrintMessage("user", text);
+    var request = new XMLHttpRequest();
+    request.open("POST", 'index', true);
+    request.send("user:" + text);
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            BotMessageId++;
+            ParseAnswer(request.responseText);
+        }
+    }
 }

@@ -42,16 +42,16 @@ var ResultMass = [false,false,false,false,false,false,false,false,false,false,fa
 
 var OpenProgOptins =["открой ","запусти "];
 var CloseProgOptins =["закрой","заверши","убей процесс"];
-
+var andOption =["а "];
 var lastMessage = "Это первое сообщение";
 
 var ListOfFileTxt =[];
 
 var flagOfComandContinue = [false,false,false,false];
-
+var endOfRequest = 0;
 var mysql = require('mysql');
 var PythonShell = require('python-shell');
-
+var lastComand = "";
 //var DataBaseConnect = mysql.createClient();
 
 var findIndex;
@@ -121,10 +121,20 @@ exports.getcmd = function(cmd)
     cmd = cmd.toLowerCase();
     var comandCaunter = ResultMass.length;
     var findcmd = false;
+    andOption.forEach(function (item) {
+       findIndex = cmd.indexOf(item);
+       if(findIndex != -1)
+       {
+           cmd = lastComand.substring(0,endOfRequest) + " " + cmd.substring(item.length,cmd.length);
+           console.log(cmd);
+       }
+    });
+
     optionGoogleSerch.forEach(function (item) {
         findIndex = cmd.indexOf(item);
             if(findIndex != -1 && !findcmd)
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerSerch[Random(0,3)];
                 findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
             }
@@ -136,6 +146,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1 )
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd = lastMessage+"***"+"openPage:google.com";
             }
@@ -147,6 +158,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerSerch[Random(0,3)];
                 findcmd =  lastMessage+"***"+openWiki(cmd,findIndex += item.length);
             }
@@ -158,6 +170,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
             }
@@ -170,6 +183,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerSerch[Random(0,3)];
                 findcmd =  lastMessage+"***"+openGoogleMap(cmd,findIndex += item.length);
             }
@@ -181,6 +195,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerOk[Random(0,3)];
                 findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
             }
@@ -191,6 +206,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1 && cmd.length == item.length)
             {
+                endOfRequest = findIndex + item.length;
                 findcmd = "restart";
             }
         });
@@ -200,6 +216,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item[0])
             if(findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 var lenthRandom = item[1];
                 var min = 0;
                 var max = 1;
@@ -267,6 +284,7 @@ exports.getcmd = function(cmd)
             findIndex = cmd.indexOf(item[0]);
             if( findIndex != -1)
             {
+                endOfRequest = findIndex + item.length;
                 var options = {
                     args: [""]
                 };
@@ -282,6 +300,7 @@ exports.getcmd = function(cmd)
                 findIndex = cmd.indexOf(item[0]);
                 if( findIndex != -1)
                 {
+                    endOfRequest = findIndex + item.length;
                     var options = {
                         args: [""]
                     };
@@ -296,6 +315,7 @@ exports.getcmd = function(cmd)
         findIndex = cmd.indexOf(item[0]);
         if( findIndex != -1)
         {
+            endOfRequest = findIndex + item.length;
             var options = {
                 args: [""]
             };
@@ -312,6 +332,7 @@ exports.getcmd = function(cmd)
                 findIndex = cmd.indexOf(item[0]);
                 if( findIndex != -1)
                 {
+                    endOfRequest = findIndex + item.length;
                     var options = {
                         args: [""]
                     };
@@ -320,6 +341,7 @@ exports.getcmd = function(cmd)
                     findcmd = "answer:" + answerOk[Random(0, 3)];
                 }
             });
+    lastComand = cmd;
     return findcmd;
 }
 

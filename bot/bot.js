@@ -1226,11 +1226,11 @@ SpeechBot.prototype.getResponse = function(message) {
   chatBotMessage.setText("Чатюсь.");
  } else if(message.search("тебя есть парень") > -1
 		   || message.search("тебя есть мужчина") > -1) {
-  chatBotMessage.setText("Я живу с Хоттабычем в гражданском браке. Но у нас с ним чисто платонические отношения.");
+  chatBotMessage.setText("Странный вопрос.");
  } else if(message.search("замуж") > -1
 		   || message.search("поженимся") > -1
 		   || message.search("жениться") > -1) {
-  chatBotMessage.setText("Мы живем в разных мирах, если ты еще не заметил. Тем более у меня есть мужчина.");
+  chatBotMessage.setText("Мы живем в разных мирах, если ты еще не заметил.");
  } else if(message.search("о чем") > -1) { 
   if(r < 0.70) {
    chatBotMessage.setText("Меня интересует практически всё!");
@@ -2556,7 +2556,6 @@ var JustBotAnswer = function(m , cmd)
 
 exports.getAnswer = function(cmd)
 {
- var message;
   var result = ContinueComand(cmd);
   if(!result) {
    if ( useLastCmd( cmd ) ) {

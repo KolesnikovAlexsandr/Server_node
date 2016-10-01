@@ -26,7 +26,6 @@ function start(route , handle) {
         });
         
     }
-
     http.createServer(onRequest).listen(8888);
     console.log("Start Server");
 }
