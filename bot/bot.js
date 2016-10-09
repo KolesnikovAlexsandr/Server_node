@@ -1,6 +1,7 @@
 var LenthConvert = require("./physicalQuantities.js").LenthConvert;
 var ContinueComand = require("./findcmd.js").ContinueComand;
-
+var setLastComand = require("./findcmd.js").setLastComand;
+var setLastComandendRequest = require("./findcmd.js").setLastComandendRequest;
 var botLog;
 var botElementId = "bot";
 var botLogElementId = "botLog";
@@ -452,24 +453,32 @@ SpeechBot.prototype.getResponse = function(message) {
  var r = Math.random();
  var response = "";
  if(message.search("сколько будет:") > -1) {
+  setLastComand(message);
+  setLastComandendRequest(14);
   if(message.indexOf("?") > -1) {
    message = message.slice(message.indexOf("сколько будет:")+14, message.indexOf("?"));
   } else {
    message = message.slice(message.indexOf("сколько будет:")+14);
   };
  } else if(message.search("сколько будет") > -1) {
+  setLastComand(message);
+  setLastComandendRequest(13);
   if(message.indexOf("?") > -1) {
    message = message.slice(message.indexOf("сколько будет")+13, message.indexOf("?"));
   } else {
    message = message.slice(message.indexOf("сколько будет")+13);
   };
  } else if(message.search("посчитай:") > -1) {
+  setLastComand(message);
+  setLastComandendRequest(9);
   if(message.indexOf("?") > -1) {
    message = message.slice(message.indexOf("посчитай:")+9, message.indexOf("?"));
   } else {
    message = message.slice(message.indexOf("посчитай:")+9);
   };
  } else if(message.search("посчитай") > -1) {
+  setLastComand(message);
+  setLastComandendRequest(8);
   if(message.indexOf("?") > -1) {
    message = message.slice(message.indexOf("посчитай")+8, message.indexOf("?"));
   } else {

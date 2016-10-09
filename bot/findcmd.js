@@ -380,3 +380,11 @@ exports.useLastCmd = function (cmd) {
     });
     return flag;
 }
+
+exports.setLastComand = function (cmd) {
+  lastComand = cmd;  
+};
+
+exports.setLastComandendRequest = function (index) {
+    endOfRequest = index;
+};
