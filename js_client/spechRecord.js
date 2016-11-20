@@ -7,7 +7,7 @@ var optionControlStop = ["закончить разговор","завершен
 var optionControlStart = ["начать работу","начать запись","эй пятница","пятница","работай","старт"];
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
 var answerBy = ["Завершение работы","Работа завершена","Конец Работы","заткнись","замолчи"];
-var optionAnswer = ["answer:","openPage:","restart", "test"];
+var optionAnswer = ["answer:","openPage:","restart", "test" , "insert_element:"];
 var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"],["cоздать файл","файл"],["123","Записать файл?"],["да",""]];
 
 
@@ -48,7 +48,7 @@ function StartWork(cmd)
             if(cmd.indexOf(item)!=-1 && !find) {
                 PrintMessage("user", item);
                 setWork(true);
-                PrintMessage("bot",answerHello[Random(0,3)]);
+                PrintMessage("bot",answerHello[Random(0,3)] , true);
                 find = true;
             }
         });
@@ -62,7 +62,7 @@ function StopWork(cmd) {
             if (cmd.indexOf(item) != -1 && !find) {
                 PrintMessage("user", item);
                 setWork(false);
-                PrintMessage("bot", answerBy[Random(0, 2)]);
+                PrintMessage("bot", answerBy[Random(0, 2)],true);
                 find = true;
             }
         });
@@ -123,7 +123,7 @@ recognizer.onerror = function(event) {
 };
 
 
-var PrintMessage = function( person , message )
+var PrintMessage = function( person , message , speech_q )
 {
     messegeField = document.getElementById("monitor");
     var messageElement = document.createElement("p");
@@ -131,9 +131,11 @@ var PrintMessage = function( person , message )
     messageElement.setAttribute("style","background: 3CACFA;");
     if(person == "bot")
     {
-        recognizer.stop();
-        hiSpeeck = true;
-        speech(message);
+        if(speech_q) {
+            recognizer.stop();
+            hiSpeeck = true;
+            speech(message);
+        }
         messageElement.id = BotMessageId;
         messageElement.className = "lead text-left center-block";
         messageElement.appendChild(document.createTextNode("  "+message+"  "));
@@ -146,7 +148,7 @@ var PrintMessage = function( person , message )
     }
     messegeField.appendChild(messageElement);
 }
-// Начинаем слушать микрофон и распознавать голос
+
 
 function restart() {
     try
@@ -168,7 +170,7 @@ var ParseAnswer = function(cmd)
     cmd.forEach(function (item) {
         if(item.indexOf(optionAnswer[0]) != -1)
         {
-            PrintMessage("bot",item.substring(optionAnswer[0].length));
+            PrintMessage("bot",item.substring(optionAnswer[0].length) , true);
         }
         if(item.indexOf(optionAnswer[1]) != -1)
         {
@@ -181,6 +183,10 @@ var ParseAnswer = function(cmd)
         if(item.indexOf(optionAnswer[3]) != -1)
         {
             TestBot();
+        }
+        if(item.indexOf(optionAnswer[4]) != -1)
+        {
+            PrintElement(item.substring(optionAnswer[4].length));
         }
     });
 }
@@ -210,6 +216,14 @@ var TestBot = function()
     });
 }
 
+var PrintElement = function( element  )
+{
+    messegeField = document.getElementById("monitor");
+    var messageElement = document.createElement("div");
+        messageElement.id = BotMessageId;
+        messageElement.appendChild(document.createTextNode("  " + element + "  "));
+    messegeField.appendChild(messageElement);
+}
 
 var SendPrintToServer = function (text) {
     UserMessageId++;
@@ -224,3 +238,4 @@ var SendPrintToServer = function (text) {
         }
     }
 }
+

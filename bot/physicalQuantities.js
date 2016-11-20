@@ -35,7 +35,7 @@ exports.LenthConvert = function( message)
         }
     }catch(e)
     {
-     return BadData[Random(0,1)];
+     return false;
     }
 
 }

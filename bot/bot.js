@@ -2,6 +2,7 @@ var LenthConvert = require("./physicalQuantities.js").LenthConvert;
 var ContinueComand = require("./findcmd.js").ContinueComand;
 var setLastComand = require("./findcmd.js").setLastComand;
 var setLastComandendRequest = require("./findcmd.js").setLastComandendRequest;
+var MoneyConverter = require("./money_converter.js").MoneyConverter;
 var botLog;
 var botElementId = "bot";
 var botLogElementId = "botLog";
@@ -749,7 +750,14 @@ SpeechBot.prototype.getResponse = function(message) {
 						  || message.search("год какой") > -1) { 
    chatBotMessage.setText("Сейчас " + (new Date()).getFullYear() + " год.");
  } else if(message.search("переведи") > -1 || message.search("перевести") > -1 ) {
-   chatBotMessage.setText(LenthConvert(message));
+  var tperevedi = LenthConvert(message);
+  if(!tperevedi)
+     tperevedi = MoneyConverter(message);
+  if(!tperevedi)
+   chatBotMessage.setText("Проверьте ваши данные");
+  else
+   chatBotMessage.setText(tperevedi);
+
  }
  else if(message.search("переведи") > -1 && message.search(" градус") > -1 && message.search(" в радиан") > -1) {
   var n = 1*message.slice(message.search("переведи")+9, message.search(" градус"));

@@ -39,6 +39,7 @@ var VolumeControlOption =[["выключи звук","off"],["off звук","off
 
 var AppOption = [["skype","skype"],["скайп","skype"],["itunes","itunes"],["музык","itunes"],["айтюнс","itunes"],["xcode","xcode"],["twitter","twitter"],["твитер","twitter"],["твиттер","twitter"],["терминал","terminal"],["terminal","terminal"],["календарь","celendar"],["найстройки компьютера","prefernces"],["браузер","safari"],["сафари","safari"],["safari","safari"]];
 var ResultMass = [false,false,false,false,false,false,false,false,false,false,false,false]
+var rate = ["покажи курс","открой курс"];
 
 var OpenProgOptins =["открой ","запусти "];
 var CloseProgOptins =["закрой","заверши","убей процесс"];
@@ -342,6 +343,18 @@ exports.getcmd = function(cmd)
                     findcmd = "answer:" + answerOk[Random(0, 3)];
                 }
             });
+
+    if(!findcmd)
+        rate.forEach(function (item) {
+
+            findIndex = cmd.indexOf(item);
+            if(findIndex != -1)
+            {
+                endOfRequest = findIndex + item.length;
+                lastMessage = "answer:"+answerOk[Random(0,3)];
+                findcmd =  lastMessage+"***"+"insert_element:"+"<script src="+"'http://informers.forexpf.ru/php/cbrf.php?id=01'" + "></script>";
+            }
+        });
     lastComand = cmd;
     return findcmd;
 }
