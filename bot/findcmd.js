@@ -121,6 +121,7 @@ exports.getcmd = function(cmd)
     cmd = cmd.toLowerCase();
     var comandCaunter = ResultMass.length;
     var findcmd = false;
+    
     andOption.forEach(function (item) {
        findIndex = cmd.indexOf(item);
        if(findIndex != -1)

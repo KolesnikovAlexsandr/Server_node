@@ -12,8 +12,18 @@ body {
   width: 60%;
   margin-left: 20%;
 }
+
 #monitor{
+  position: absolute;
   overflow: auto;
-  height: 300px;
+  margin-top: 2%;
+  height: 75%;
+  width: 60%;
+}
+#userConsoleText{
+	position: absolute;
+	width: 60%;
+	top:90%;
+
 }
 

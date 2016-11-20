@@ -11,7 +11,8 @@ var optionAnswer = ["answer:","openPage:","restart", "test"];
 var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"],["cоздать файл","файл"],["123","Записать файл?"],["да",""]];
 
 
-
+var FocusInput = new Event('focus');
+var BlurInput = new Event("blur");
 function Random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -45,6 +46,7 @@ function StartWork(cmd)
     {
         optionControlStart.forEach(function (item) {
             if(cmd.indexOf(item)!=-1 && !find) {
+                PrintMessage("user", item);
                 setWork(true);
                 PrintMessage("bot",answerHello[Random(0,3)]);
                 find = true;
@@ -58,6 +60,7 @@ function StopWork(cmd) {
     if(work) {
         optionControlStop.forEach(function (item) {
             if (cmd.indexOf(item) != -1 && !find) {
+                PrintMessage("user", item);
                 setWork(false);
                 PrintMessage("bot", answerBy[Random(0, 2)]);
                 find = true;
@@ -69,7 +72,7 @@ function StopWork(cmd) {
 
 // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
 recognizer.interimResults = true;
-recognizer.continuous = true;
+recognizer.continuous = false;
 
 // Какой язык будем распознавать?
 recognizer.lang = 'ru-RU';
@@ -108,6 +111,7 @@ recognizer.onresult = function (event) {
 
     } else {
         console.log('Промежуточный результат: ', result[0].transcript);
+        document.getElementById("userConsoleText").dispatchEvent(FocusInput);
         document.getElementById("userConsoleText").value = result[0].transcript;
         document.getElementById("userConsoleText").setAttribute('style',"color:#DCDCDC;");
     }
@@ -119,24 +123,25 @@ recognizer.onerror = function(event) {
 };
 
 
-var PrintMessage = function(person , message)
+var PrintMessage = function( person , message )
 {
     messegeField = document.getElementById("monitor");
     var messageElement = document.createElement("p");
     messageElement.setAttribute("style","border-radius: 20px;");
+    messageElement.setAttribute("style","background: 3CACFA;");
     if(person == "bot")
     {
         recognizer.stop();
         hiSpeeck = true;
         speech(message);
         messageElement.id = BotMessageId;
-        messageElement.className = "lead bg-info text-left center-block";
+        messageElement.className = "lead text-left center-block";
         messageElement.appendChild(document.createTextNode("  "+message+"  "));
     }
     else
     {
         messageElement.id = UserMessageId;
-        messageElement.className = "lead bg-danger text-right ";
+        messageElement.className = "lead text-right ";
         messageElement.appendChild(document.createTextNode("  " + message + "  "));
     }
     messegeField.appendChild(messageElement);
