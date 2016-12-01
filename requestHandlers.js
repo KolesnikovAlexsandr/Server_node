@@ -5,16 +5,16 @@
 var querystring = require("querystring");
 var bot = require("./bot/bot.js").getAnswer;
 
-
+var respond = "";
 function index(response , postDate) {
-
-    console.log("Request handler 'index' was called.");
-    console.log("Respond:" + response);
-    console.log("PostData:" + postDate);
+    console.log(postDate)
+    console.log("User:" + postDate.substring(5));
     // Читаем файл
     if(postDate.indexOf("user:") != -1)
     {
-        response.write(bot(postDate.substring(5)));
+        respond = bot(postDate.substring(5));
+        console.log("Bot:" + respond);
+        response.write(respond);
         response.end();
     }
     else {
