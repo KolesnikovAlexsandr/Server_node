@@ -7,7 +7,7 @@ var optionControlStop = ["закончить разговор","завершен
 var optionControlStart = ["начать работу","начать запись","эй пятница","пятница","работай","старт"];
 var answerHello = ["Здравствуйте","Добрый день","Привет","Я вас слушаю"]
 var answerBy = ["Завершение работы","Работа завершена","Конец Работы","заткнись","замолчи"];
-var optionAnswer = ["answer:","openPage:","restart", "test" , "openApp:"];
+var optionAnswer = ["answer:","openPage:","restart", "test" , "insert_element:" ,"openApp:"];
 var TestAnswerRequest = [["посчитай 3 + 5","8"],["сколько будет 7*8/4","14"],["переведи 40 метров в километры","0.04 километр"],["переведи 30 километров в метры","30000 метров"],["cоздать файл","файл"],["123","Записать файл?"],["да",""]];
 
 
@@ -186,6 +186,7 @@ var ParseAnswer = function(cmd)
         }
         if(item.indexOf(optionAnswer[4]) != -1)
         {
+            console.log(item.substring(optionAnswer[4].length));
             PrintElement(item.substring(optionAnswer[4].length));
         }
     });
@@ -220,9 +221,10 @@ var PrintElement = function( element  )
 {
     messegeField = document.getElementById("monitor");
     var messageElement = document.createElement("div");
-        messageElement.id = BotMessageId;
-        messageElement.appendChild(document.createTextNode("  " + element + "  "));
+    messageElement.innerHTML = element;
+    messageElement = messageElement.firstChild;
     messegeField.appendChild(messageElement);
+    
 }
 
 var SendPrintToServer = function (text) {

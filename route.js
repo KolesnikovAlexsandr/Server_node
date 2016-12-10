@@ -4,13 +4,15 @@
 
 
 //redirect requests
-function route(handle , pathname , response , postDate) {
-    if(typeof handle[pathname] === 'function' )
+function route( handle , pathname , response , postDate )
+{
+    if( typeof handle[ pathname ] === 'function' )
     {
-        handle[pathname](response,postDate);
+        handle[ pathname ]( response , postDate );
     }
-    else {
-        handle["file"](response,pathname);
+    else 
+    {
+        handle[ "file" ]( response , pathname );
     }
 }
 

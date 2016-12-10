@@ -106,6 +106,8 @@ var lastComand           = "";
 
 var findIndex; // global varible for find text in user cmd
 
+var MoneyInformer = '<div id="informerBelarusbank"></div><script type="text/javascript" src="//belarusbank.by/informer?logotyp=1&ColorTextTitle=000000&ColorTextInformer=969696&ColorBackGround=ffffff&ColorTitleBackGround=ffffff&ColorBorder=006030"></script>'
+
 function Random( min , max )
 {
     return Math.floor( Math.random( ) * ( max - min + 1 ) ) + min;
@@ -535,7 +537,7 @@ exports.getcmd = function( cmd , device)
             {
                 endOfRequest = findIndex + item.length;
                 lastMessage = "answer:" + answerOk[ Random( 0 , 3 ) ];
-                findcmd =  lastMessage+"***"+"insert_element:"+"<script src="+"'http://informers.forexpf.ru/php/cbrf.php?id=01'" + "></script>";
+                findcmd =  lastMessage+"***"+"insert_element:"+MoneyInformer;
             }
         });
 
