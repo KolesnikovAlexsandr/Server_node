@@ -230,7 +230,7 @@ var SendPrintToServer = function (text) {
     PrintMessage("user", text);
     var request = new XMLHttpRequest();
     request.open("POST", 'index', true);
-    request.send("user:" + text);
+    request.send("device:Web***user:" + text);
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
             BotMessageId++;

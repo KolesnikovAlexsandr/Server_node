@@ -5,6 +5,7 @@
 
 var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
 var WriteTxtFile = require("./WorkWithFile.js").WriteTxtFile;
+var СheckDevice = require("./CheckDevice.js").checkDevice;
 //var child_process = require('child_process');
 
 var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
@@ -117,7 +118,7 @@ exports.ContinueComand = function (cmd) {
     return result;
 }
 
-exports.getcmd = function(cmd)
+exports.getcmd = function( cmd , device)
 {
     cmd = cmd.toLowerCase();
     var comandCaunter = ResultMass.length;
@@ -134,11 +135,13 @@ exports.getcmd = function(cmd)
 
     optionGoogleSerch.forEach(function (item) {
         findIndex = cmd.indexOf(item);
-            if(findIndex != -1 && !findcmd)
+            if(findIndex != -1 && !findcmd  )
             {
+
                 endOfRequest = findIndex + item.length;
                 lastMessage = "answer:"+answerSerch[Random(0,3)];
                 findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
+
             }
     });
 

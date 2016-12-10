@@ -2227,7 +2227,8 @@ SpeechBot.prototype.getResponse = function(message) {
   } else if(r < 0.50) {
    chatBotMessage.setText("Хочешь общаться со мной на другом языке, заходи через годик.");
   } else if(r < 0.75) {
-   chatBotMessage.setText("Я буду учить другие языки, но пока могу общаться только по-русски.");
+   //chatBotMessage.setText("Я буду учить другие языки, но пока могу общаться только по-русски.");
+   chatBotMessage.setText("Привет лиса =)Специально для тебя оооооооооооооооооооооооооооооооочень длинное сообщение)А может и не очень длинное)Я не знаю)Надеюсь тебе хватит)");
   } else {
    chatBotMessage.setText("Извини, но я пока не поддерживаю другие языки. Хотя это скоро изменится.");
   }; 
@@ -2571,19 +2572,19 @@ var JustBotAnswer = function(m , cmd)
 };
 
 
-exports.getAnswer = function(cmd)
+exports.getAnswer = function( cmd , device)
 {
   var result = ContinueComand(cmd);
   if(!result) {
    if ( useLastCmd( cmd ) ) {
 	cmd = lastCmd;
 	cmd = findMath( cmd );
-	result = getcmd( cmd );
+	result = getcmd( cmd , device);
    }
    else {
 	lastCmd = cmd;
 	cmd = findMath(cmd);
-	result = getcmd(cmd);
+	result = getcmd(cmd , device);
    }
    result = JustBotAnswer(result , cmd);
   }

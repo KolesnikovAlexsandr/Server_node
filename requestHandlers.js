@@ -4,20 +4,41 @@
 
 var querystring = require("querystring");
 var bot = require("./bot/bot.js").getAnswer;
+var time = require('time');
+var now = new time.Date();
+
 
 var respond = "";
+var device = "";
+var cmd_mass = "";
+var user_cmd = "";
+
+
+
 function index(response , postDate) {
-    console.log(postDate)
-    console.log("User:" + postDate.substring(5));
-    // Читаем файл
-    if(postDate.indexOf("user:") != -1)
+    //console.log(postDate)
+    if(postDate.indexOf("device") != -1 && postDate.indexOf("user") != -1)
     {
-        respond = bot(postDate.substring(5));
+        cmd = postDate.split("***");
+        cmd.forEach(function (item) {
+           if(item.indexOf("user:") != -1)
+           {
+               user_cmd = item.substring(5);
+           }
+           if(item.indexOf("device:") != -1)
+           {
+               device = item.substring(7);
+           }
+        });
+
+        console.log( "User:" + user_cmd + "   device:"+device  +  "   Time:" + now);
+        respond = bot( user_cmd , device );
         console.log("Bot:" + respond);
         response.write(respond);
         response.end();
     }
     else {
+        now.setTimezone('UTC');
         fs = require('fs');
         fs.readFile('./index.html', function (err, info) {
             if (err) throw err;
