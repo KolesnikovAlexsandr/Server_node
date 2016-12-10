@@ -5,7 +5,7 @@
 
 var CreateTxtFileByName = require("./WorkWithFile.js").CreateTxtFileByName;
 var WriteTxtFile = require("./WorkWithFile.js").WriteTxtFile;
-var СheckDevice = require("./CheckDevice.js").checkDevice;
+var CheckDevice = require("./CheckDevice.js").checkDevice;
 //var child_process = require('child_process');
 
 var optionGoogleSerch = ["-----","найди в гугле" , "загугли" , "поиск в гугл" , "найди в google" ,"найди мне информацию о" ,"найди в гугле про" ,"кто такой" ,"найди в гугле o" , "что такое" ];
@@ -137,11 +137,16 @@ exports.getcmd = function( cmd , device)
         findIndex = cmd.indexOf(item);
             if(findIndex != -1 && !findcmd  )
             {
-
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerSerch[Random(0,3)];
-                findcmd = lastMessage+"***"+openGoogle(cmd,findIndex += item.length);
-
+                if(CheckDevice("openPage",device)) {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:" + answerSerch[Random(0, 3)];
+                    findcmd = lastMessage + "***" + openGoogle(cmd, findIndex += item.length);
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
     });
 
@@ -151,21 +156,35 @@ exports.getcmd = function( cmd , device)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1 )
             {
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerOk[Random(0,3)];
-                findcmd = lastMessage+"***"+"openPage:google.com";
+                if(CheckDevice("openPage",device)) {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:"+answerOk[Random(0,3)];
+                    findcmd = lastMessage+"***"+"openPage:google.com";
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
 
         if(!findcmd)
         optionWikiSerch.forEach(function (item) {
-
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerSerch[Random(0,3)];
-                findcmd =  lastMessage+"***"+openWiki(cmd,findIndex += item.length);
+                if(CheckDevice("openPage",device))
+                {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:" + answerSerch[Random(0, 3)];
+                    findcmd = lastMessage + "***" + openWiki(cmd, findIndex += item.length);
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
 
@@ -175,9 +194,16 @@ exports.getcmd = function( cmd , device)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerOk[Random(0,3)];
-                findcmd =  lastMessage+"***"+"openPage:ru.wikipedia.org/";
+                if(CheckDevice("openPage",device)) {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:" + answerOk[Random(0, 3)];
+                    findcmd = lastMessage + "***" + "openPage:ru.wikipedia.org/";
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
 
@@ -188,9 +214,17 @@ exports.getcmd = function( cmd , device)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerSerch[Random(0,3)];
-                findcmd =  lastMessage+"***"+openGoogleMap(cmd,findIndex += item.length);
+                if(CheckDevice("openPage",device))
+                {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:" + answerSerch[Random(0, 3)];
+                    findcmd = lastMessage + "***" + openGoogleMap(cmd, findIndex += item.length);
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
 
@@ -200,9 +234,17 @@ exports.getcmd = function( cmd , device)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1)
             {
-                endOfRequest = findIndex + item.length;
-                lastMessage = "answer:"+answerOk[Random(0,3)];
-                findcmd =  lastMessage+"***"+"openPage:google.ru/maps";
+                if(CheckDevice("openPage",device))
+                {
+                    endOfRequest = findIndex + item.length;
+                    lastMessage = "answer:" + answerOk[Random(0, 3)];
+                    findcmd = lastMessage + "***" + "openPage:google.ru/maps";
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
     if(!findcmd)
@@ -211,8 +253,16 @@ exports.getcmd = function( cmd , device)
             findIndex = cmd.indexOf(item);
             if(findIndex != -1 && cmd.length == item.length)
             {
-                endOfRequest = findIndex + item.length;
-                findcmd = "restart";
+                if(CheckDevice("restart",device))
+                {
+                    endOfRequest = findIndex + item.length;
+                    findcmd = "restart";
+                }
+                else
+                {
+                    lastMessage = "answer:Извините но я немогу выполнить данную команду на этом устройстве";
+                    findcmd =  lastMessage;
+                }
             }
         });
 
