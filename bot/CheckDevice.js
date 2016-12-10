@@ -1,7 +1,7 @@
 /**
  * Created by sasha on 06/12/2016.
  */
-var ComandDeviceCheck = [ ["openPage","web","python_client"],["test","web","python_client"],["restart","web"]];
+var ComandDeviceCheck = [ ["openPage","web","python_client"],["test","web","python_client"],["restart","web"],];
 
 exports.checkDevice = function( cmd , device)
 {   var result = false;
